@@ -42,9 +42,11 @@ Examples:
 ```bash
 tvir ingest --metadata path/to/metadata.yaml --source path/to/source.pine --analysis path/to/analysis.yaml
 tvir backtest example-ema-cross --config default-matrix.yaml --exchange coinbase --symbol BTC/USD --timeframe 1h
-tvir batch --status strategy_ready --config default-matrix.yaml --exchange coinbase
+tvir batch --status strategy_ready --config default-matrix.yaml
 tvir export-frontend
 ```
+
+Ingest, backtest, and batch commands now refresh the frontend generated indexes automatically.
 
 ## Opinionated workflow
 - use TradingView for discovery and Pine extraction
