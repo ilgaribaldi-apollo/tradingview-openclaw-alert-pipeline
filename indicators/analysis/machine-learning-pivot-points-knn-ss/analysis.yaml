@@ -1,0 +1,29 @@
+slug: machine-learning-pivot-points-knn-ss
+summary: Visible Pine logic suggests a pivot-high/pivot-low structure model with historical
+  slope calculations and a machine-learning flavored clustering layer that is not
+  fully captured in the current extraction.
+signal_model: event_based
+inputs:
+  bars_left_right: 10
+  knn_clusters: 2
+  pivot_window: 20
+features:
+- pivot_high
+- pivot_low
+- slope_regression
+- clustering_or_similarity_layer
+unsupported:
+- full KNN/clustering logic beyond visible extracted section
+- helper tables and UI elements
+- any hidden lines below the current captured buffer
+entry_logic: 'Approximation for validation only: go long after a confirmed pivot low
+  when short-term slope turns positive.'
+exit_logic: 'Approximation for validation only: exit after a confirmed pivot high
+  when short-term slope turns negative.'
+caution_flags:
+- partial_source_capture
+- repainting_risk
+- pivot_confirmation_delay
+- translation_is_approximate
+translation_notes: 'This is not a faithful full Pine port. It is a workflow validation
+  using the visible extracted core ideas: pivot structure plus slope direction.'

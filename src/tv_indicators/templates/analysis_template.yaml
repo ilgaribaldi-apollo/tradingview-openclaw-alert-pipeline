@@ -1,0 +1,10 @@
+slug: "example-indicator-slug"
+summary: "Brief description of what the indicator is trying to do."
+signal_model: "event_based"
+inputs: {}
+features: []
+unsupported: []
+entry_logic: ""
+exit_logic: ""
+caution_flags: []
+translation_notes: ""

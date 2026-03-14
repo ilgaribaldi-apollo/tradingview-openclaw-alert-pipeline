@@ -1,0 +1,4 @@
+run_id,indicator_slug,exchange,symbol,timeframe,engine,total_return,max_drawdown,sharpe_ratio,win_rate,trade_count,notes
+20260314T210835Z_machine-learning-pivot-points-knn-ss,machine-learning-pivot-points-knn-ss,coinbase,BTC/USD,1h,pure_pandas_backtester,5.0436960618235105,-2.325177392070643,5.202741127375768,66.66666666666666,3,pure_pandas_backtester
+20260314T211459Z_machine-learning-pivot-points-knn-ss,machine-learning-pivot-points-knn-ss,coinbase,BTC/USD,1h,vectorbt,5.2017612345131585,2.325079717150379,5.377352616087074,50.0,3,vectorbt
+20260314T211809Z_ema-ma-crossover,ema-ma-crossover,coinbase,BTC/USD,1h,vectorbt,5.916389040562898,3.7027755806493015,5.236129847373421,37.5,9,vectorbt

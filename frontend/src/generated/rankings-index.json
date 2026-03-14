@@ -1,0 +1,47 @@
+{
+  "failed": [],
+  "items": [
+    {
+      "engine": "vectorbt",
+      "exchange": "coinbase",
+      "indicatorSlug": "ema-ma-crossover",
+      "maxDrawdown": 3.7027755806493015,
+      "notes": "vectorbt",
+      "pair": "BTC/USD",
+      "runId": "20260314T211809Z_ema-ma-crossover",
+      "sharpeRatio": 5.236129847373421,
+      "timeframe": "1h",
+      "totalReturn": 5.916389040562898,
+      "tradeCount": 9,
+      "winRate": 37.5
+    },
+    {
+      "engine": "vectorbt",
+      "exchange": "coinbase",
+      "indicatorSlug": "machine-learning-pivot-points-knn-ss",
+      "maxDrawdown": 2.325079717150379,
+      "notes": "vectorbt",
+      "pair": "BTC/USD",
+      "runId": "20260314T211459Z_machine-learning-pivot-points-knn-ss",
+      "sharpeRatio": 5.377352616087074,
+      "timeframe": "1h",
+      "totalReturn": 5.2017612345131585,
+      "tradeCount": 3,
+      "winRate": 50.0
+    },
+    {
+      "engine": "pure_pandas_backtester",
+      "exchange": "coinbase",
+      "indicatorSlug": "machine-learning-pivot-points-knn-ss",
+      "maxDrawdown": -2.325177392070643,
+      "notes": "pure_pandas_backtester",
+      "pair": "BTC/USD",
+      "runId": "20260314T210835Z_machine-learning-pivot-points-knn-ss",
+      "sharpeRatio": 5.202741127375768,
+      "timeframe": "1h",
+      "totalReturn": 5.0436960618235105,
+      "tradeCount": 3,
+      "winRate": 66.66666666666666
+    }
+  ]
+}

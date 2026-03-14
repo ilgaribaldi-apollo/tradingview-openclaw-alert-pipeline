@@ -1,0 +1,77 @@
+{
+  "items": [
+    {
+      "analysis": {
+        "cautionFlags": [
+          "semantics_are_inverse_of_typical_cross_labels"
+        ],
+        "signalModel": "state_based",
+        "summary": "Simple open-source crossover indicator comparing an SMA of close against an EMA of that SMA. Directional state flips when the EMA crosses the MA.",
+        "translationNotes": "Original Pine sets pos=1 when xEMA < xMA and pos=-1 when xEMA > xMA. Strategy wrapper preserves that literal directional-state logic instead of imposing a different convention."
+      },
+      "author": "HPotter",
+      "classification": "signal_capable",
+      "coverage": {
+        "pairs": [
+          "BTC/USD"
+        ],
+        "runCount": 1,
+        "timeframes": [
+          "1h"
+        ]
+      },
+      "discoveredFrom": "Search: EMA",
+      "notes": "Clean baseline validation script. Full source captured from TradingView Monaco view-lines. Translation is close to the original logic: compare SMA(close, n) against EMA(SMA(close, n), n).",
+      "pineVersion": "v3",
+      "repaintRisk": "low",
+      "scriptType": "indicator",
+      "slug": "ema-ma-crossover",
+      "sourceUrl": "https://www.tradingview.com/chart/1TvyY4Wn/?symbol=BINANCE%3ABTCUSDT",
+      "status": "strategy_ready",
+      "tags": [
+        "ema",
+        "ma",
+        "crossover"
+      ],
+      "title": "EMA & MA Crossover"
+    },
+    {
+      "analysis": {
+        "cautionFlags": [
+          "partial_source_capture",
+          "repainting_risk",
+          "pivot_confirmation_delay",
+          "translation_is_approximate"
+        ],
+        "signalModel": "event_based",
+        "summary": "Visible Pine logic suggests a pivot-high/pivot-low structure model with historical slope calculations and a machine-learning flavored clustering layer that is not fully captured in the current extraction.",
+        "translationNotes": "This is not a faithful full Pine port. It is a workflow validation using the visible extracted core ideas: pivot structure plus slope direction."
+      },
+      "author": "Steversteves",
+      "classification": "signal_capable",
+      "coverage": {
+        "pairs": [
+          "BTC/USD"
+        ],
+        "runCount": 2,
+        "timeframes": [
+          "1h"
+        ]
+      },
+      "discoveredFrom": "Editors' picks",
+      "notes": "First live pipeline validation. Extracted from TradingView source editor using Monaco visible text. Source capture may be partial/truncated for this script; translation below is an approximation of the visible pivot/slope logic, not a full Pine-equivalent port.",
+      "pineVersion": "v6",
+      "repaintRisk": "high",
+      "scriptType": "indicator",
+      "slug": "machine-learning-pivot-points-knn-ss",
+      "sourceUrl": "https://www.tradingview.com/chart/1TvyY4Wn/?symbol=BINANCE%3ABTCUSDT",
+      "status": "analyzed",
+      "tags": [
+        "pivots",
+        "machine-learning",
+        "structure"
+      ],
+      "title": "Machine Learning Pivot Points (KNN) [SS]"
+    }
+  ]
+}

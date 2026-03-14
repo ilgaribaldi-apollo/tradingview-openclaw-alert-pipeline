@@ -1,0 +1,13 @@
+slug: "example-indicator-slug"
+title: "Example Indicator"
+author: "Unknown"
+source_url: "https://www.tradingview.com/..."
+discovered_from: "Top"
+extracted_at: "2026-03-14T21:00:00Z"
+pine_version: "v5"
+script_type: "indicator"
+classification: "signal_capable"
+repaint_risk: "unknown"
+status: "raw_only"
+tags: []
+notes: ""

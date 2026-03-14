@@ -1,0 +1,16 @@
+name: default-matrix
+notes: "Default crypto benchmark matrix for comparable indicator tests. Use the same cached data and assumptions across indicators."
+symbols:
+  - BTC/USD
+  - ETH/USD
+  - SOL/USD
+  - DOGE/USD
+timeframes:
+  - 1h
+date_range:
+  start: "2023-01-01"
+  end: "2026-01-01"
+fees_bps: 10
+slippage_bps: 5
+position_sizing: "fixed_notional"
+default_exchange: "coinbase"

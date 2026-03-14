@@ -1,0 +1,85 @@
+{
+  "items": [
+    {
+      "dateRange": {
+        "end": "2026-01-01",
+        "start": "2023-01-01"
+      },
+      "exchange": "coinbase",
+      "feesBps": 10,
+      "indicatorSlug": "ema-ma-crossover",
+      "metrics": {
+        "equity_final": 1.0591638904056289,
+        "exchange": "coinbase",
+        "indicator_slug": "ema-ma-crossover",
+        "max_drawdown": 3.7027755806493015,
+        "notes": "vectorbt",
+        "sharpe_ratio": 5.236129847373421,
+        "symbol": "BTC/USD",
+        "timeframe": "1h",
+        "total_return": 5.916389040562898,
+        "trade_count": 9,
+        "win_rate": 37.5
+      },
+      "pair": "BTC/USD",
+      "runId": "20260314T211809Z_ema-ma-crossover",
+      "slippageBps": 5,
+      "summary": "# Backtest Summary \u2014 ema-ma-crossover\n\n- Symbol: BTC/USD\n- Timeframe: 1h\n- Total Return [%]: 5.916389040562898\n- Max Drawdown [%]: 3.7027755806493015\n- Sharpe Ratio: 5.236129847373421\n- Win Rate [%]: 37.5\n- Trade Count: 9\n- Notes: vectorbt",
+      "timeframe": "1h"
+    },
+    {
+      "dateRange": {
+        "end": "2026-01-01",
+        "start": "2023-01-01"
+      },
+      "exchange": "coinbase",
+      "feesBps": 10,
+      "indicatorSlug": "machine-learning-pivot-points-knn-ss",
+      "metrics": {
+        "equity_final": 1.0520176123451315,
+        "exchange": "coinbase",
+        "indicator_slug": "machine-learning-pivot-points-knn-ss",
+        "max_drawdown": 2.325079717150379,
+        "notes": "vectorbt",
+        "sharpe_ratio": 5.377352616087074,
+        "symbol": "BTC/USD",
+        "timeframe": "1h",
+        "total_return": 5.2017612345131585,
+        "trade_count": 3,
+        "win_rate": 50.0
+      },
+      "pair": "BTC/USD",
+      "runId": "20260314T211459Z_machine-learning-pivot-points-knn-ss",
+      "slippageBps": 5,
+      "summary": "# Backtest Summary \u2014 machine-learning-pivot-points-knn-ss\n\n- Symbol: BTC/USD\n- Timeframe: 1h\n- Total Return [%]: 5.2017612345131585\n- Max Drawdown [%]: 2.325079717150379\n- Sharpe Ratio: 5.377352616087074\n- Win Rate [%]: 50.0\n- Trade Count: 3\n- Notes: vectorbt",
+      "timeframe": "1h"
+    },
+    {
+      "dateRange": {
+        "end": "2026-01-01",
+        "start": "2023-01-01"
+      },
+      "exchange": "coinbase",
+      "feesBps": 10,
+      "indicatorSlug": "machine-learning-pivot-points-knn-ss",
+      "metrics": {
+        "equity_final": 1.050436960618235,
+        "exchange": "coinbase",
+        "indicator_slug": "machine-learning-pivot-points-knn-ss",
+        "max_drawdown": -2.325177392070643,
+        "notes": "pure_pandas_backtester",
+        "sharpe_ratio": 5.202741127375768,
+        "symbol": "BTC/USD",
+        "timeframe": "1h",
+        "total_return": 5.0436960618235105,
+        "trade_count": 3,
+        "win_rate": 66.66666666666666
+      },
+      "pair": "BTC/USD",
+      "runId": "20260314T210835Z_machine-learning-pivot-points-knn-ss",
+      "slippageBps": 5,
+      "summary": "# Backtest Summary \u2014 machine-learning-pivot-points-knn-ss\n\n- Symbol: BTC/USD\n- Timeframe: 1h\n- Total Return [%]: 5.0436960618235105\n- Max Drawdown [%]: -2.325177392070643\n- Sharpe Ratio: 5.202741127375768\n- Win Rate [%]: 66.66666666666666\n- Trade Count: 3\n- Notes: pure_pandas_backtester",
+      "timeframe": "1h"
+    }
+  ]
+}

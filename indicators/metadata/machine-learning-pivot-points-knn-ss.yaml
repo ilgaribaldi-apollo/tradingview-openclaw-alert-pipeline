@@ -1,0 +1,19 @@
+slug: machine-learning-pivot-points-knn-ss
+title: Machine Learning Pivot Points (KNN) [SS]
+author: Steversteves
+source_url: https://www.tradingview.com/chart/1TvyY4Wn/?symbol=BINANCE%3ABTCUSDT
+discovered_from: Editors' picks
+extracted_at: '2026-03-14T21:55:00Z'
+pine_version: v6
+script_type: indicator
+classification: signal_capable
+repaint_risk: high
+status: analyzed
+tags:
+- pivots
+- machine-learning
+- structure
+notes: First live pipeline validation. Extracted from TradingView source editor using
+  Monaco visible text. Source capture may be partial/truncated for this script; translation
+  below is an approximation of the visible pivot/slope logic, not a full Pine-equivalent
+  port.

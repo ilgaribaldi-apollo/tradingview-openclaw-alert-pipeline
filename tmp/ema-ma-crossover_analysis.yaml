@@ -1,0 +1,18 @@
+slug: "ema-ma-crossover"
+summary: "Simple open-source crossover indicator comparing an SMA of close against an EMA of that SMA. Directional state flips when the EMA crosses the MA."
+signal_model: "state_based"
+inputs:
+  length_ma: 10
+  length_ema: 10
+features:
+  - sma
+  - ema
+  - directional_state
+unsupported:
+  - bar coloring
+  - chart-only visual presentation
+entry_logic: "Enter long when directional state flips from non-long to long, i.e. xEMA crosses below xMA as encoded by the original Pine pos variable." 
+exit_logic: "Exit long when directional state flips from long to short, i.e. xEMA crosses above xMA." 
+caution_flags:
+  - semantics_are_inverse_of_typical_cross_labels
+translation_notes: "Original Pine sets pos=1 when xEMA < xMA and pos=-1 when xEMA > xMA. Strategy wrapper preserves that literal directional-state logic instead of imposing a different convention."

@@ -1,0 +1,66 @@
+Metadata-Version: 2.4
+Name: tv-indicator-research
+Version: 0.1.0
+Summary: TradingView indicator intake, analysis, translation, and backtesting pipeline
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: ccxt>=4.4.0
+Requires-Dist: numpy>=1.26
+Requires-Dist: pandas>=2.2
+Requires-Dist: PyYAML>=6.0
+Requires-Dist: vectorbt>=0.26
+Provides-Extra: dev
+Requires-Dist: pytest>=8.0; extra == "dev"
+Requires-Dist: ruff>=0.9.0; extra == "dev"
+
+# TradingView Indicator Research Pipeline
+
+This directory is the implementation/workspace area for indicator intake, analysis, Python translation, backtesting, and comparison.
+
+## Layout
+- `indicators/raw/` — exact Pine source as extracted from TradingView
+- `indicators/metadata/` — sidecar metadata files
+- `indicators/analysis/` — structured interpretation before translation
+- `indicators/normalized/` — minimally cleaned/standardized variants
+- `indicators/strategies/` — backtestable Python wrappers/adaptations
+- `indicators/catalog/` — aggregate catalog/index files
+- `data/market/` — cached OHLCV datasets for repeatable comparisons
+- `backtests/configs/` — backtest matrices and run configs
+- `backtests/runners/` — execution scripts or runner notes
+- `backtests/suites/` — smoke/benchmark suite definitions
+- `results/runs/` — immutable per-run output folders
+- `results/rankings/` — cross-run comparisons and failed-run logs
+- `docs/` — operator workflow docs and templates
+- `docs/workflow-blueprint.md` — end-to-end runbook for TradingView skill -> Python backtest
+- `src/tv_indicators/` — Python package and CLI
+
+## Rules
+1. Never edit files in `indicators/raw/` after intake.
+2. Every indicator gets metadata before adaptation.
+3. Every serious indicator gets an analysis artifact before translation.
+4. Every strategy wrapper documents its interpretation assumptions.
+5. Every backtest run stores config + metrics + trades + summary.
+6. Rejecting an indicator is allowed; forcing bad scripts into fake strategies is not.
+
+## CLI
+After creating the project-local UV environment and installing the project:
+
+```bash
+uv venv --python /opt/homebrew/bin/python3.13 .venv
+source .venv/bin/activate
+uv pip install -e .
+```
+
+Examples:
+
+```bash
+tvir ingest --metadata path/to/metadata.yaml --source path/to/source.pine --analysis path/to/analysis.yaml
+tvir backtest example-ema-cross --config default-matrix.yaml --exchange binance --symbol BTC/USDT --timeframe 1h
+tvir batch --status strategy_ready --config default-matrix.yaml --exchange binance
+```
+
+## Opinionated workflow
+- use TradingView for discovery and Pine extraction
+- use Python for translation and testing
+- only batch-test indicators that are actually ready
+- keep results append-only so comparisons stay honest

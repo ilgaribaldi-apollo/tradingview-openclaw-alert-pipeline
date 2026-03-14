@@ -1,0 +1,18 @@
+slug: ema-ma-crossover
+title: EMA & MA Crossover
+author: HPotter
+source_url: https://www.tradingview.com/chart/1TvyY4Wn/?symbol=BINANCE%3ABTCUSDT
+discovered_from: 'Search: EMA'
+extracted_at: '2026-03-14T22:19:00Z'
+pine_version: v3
+script_type: indicator
+classification: signal_capable
+repaint_risk: low
+status: strategy_ready
+tags:
+- ema
+- ma
+- crossover
+notes: 'Clean baseline validation script. Full source captured from TradingView Monaco
+  view-lines. Translation is close to the original logic: compare SMA(close, n) against
+  EMA(SMA(close, n), n).'

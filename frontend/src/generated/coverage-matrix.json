@@ -1,0 +1,28 @@
+{
+  "cells": [
+    {
+      "indicatorSlug": "ema-ma-crossover",
+      "indicatorTitle": "EMA & MA Crossover",
+      "pair": "BTC/USD",
+      "runId": "20260314T211809Z_ema-ma-crossover",
+      "status": "tested",
+      "timeframe": "1h",
+      "totalReturn": 5.916389040562898
+    },
+    {
+      "indicatorSlug": "machine-learning-pivot-points-knn-ss",
+      "indicatorTitle": "Machine Learning Pivot Points (KNN) [SS]",
+      "pair": "BTC/USD",
+      "runId": "20260314T211459Z_machine-learning-pivot-points-knn-ss",
+      "status": "tested",
+      "timeframe": "1h",
+      "totalReturn": 5.2017612345131585
+    }
+  ],
+  "pairs": [
+    "BTC/USD"
+  ],
+  "timeframes": [
+    "1h"
+  ]
+}

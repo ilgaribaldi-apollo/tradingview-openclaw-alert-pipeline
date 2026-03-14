@@ -1,0 +1,47 @@
+// This Pine Script® code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// © Steversteves
+//        _            _          _         _                        _          _      _          _      _               _                      _           _        
+//       / /\\         / /\\       /\\ \\     /\\ \\                      /\\ \\       /\\ \\   /\\ \\    _ / /\\   / /\\             /\\ \\                   /\\ \\       / /\\       
+//      / /  \\       / /  \\      \\_\\ \\   /  \\ \\                    /  \\ \\     /  \\ \\__\\ \\ \\  /_/ / /__/ /  \\           /  \\ \\                  \\_\\ \\   __/ /  \\      
+//     / / /\\ \\__   / / /\\ \\     /\\__ \\ / /\\ \\ \\     ____         / /\\ \\ \\   / /\\ \\___\\\\ \\ \\ \\___\\//___/ /\\ \\         / /\\ \\ \\                 /\\__ \\ /___/ /\\ \\     
+//    / / /\\ \\___\\ / / /\\_\\/    / /_ \\ \\\/_/\\ \\ \\  /\\____/\\      / / /\\ \\_\\ / / /\\/___// / /  \\ \\ \\\\___\\/\\ \\ \\       / / /\\ \\_\\               / /_ \\ \\\\___\\/\\ \\ \\    
+//    \\ \\ \\ \/___// / /        / / /\\ \\ \\    \\ \\ \\ \/____\\/     / /_/_ \/_// / /       \\ \\ \\   \\_\\ \\      \\ \\ \\     / /_/_ \/_/              / / /\\ \\ \\      \\ \\ \\   
+//     \\ \\ \\      \\ \\ \\   _   / / /  \/_/_   / / / /\\____/\\    / /____/\\  / / /         \\ \\ \\  / / /       \\ \\ \\   / /____/\\                / / /  \/_/       \\ \\ \\  
+// _    \\ \\ \\      \\ \\ \/ /\\ / / /      /\\ \/ / /  \/____\\/   / /\\____\\/ / / /           \\ \\ \/ / /         \\ \\ \\ / /\\____\\/___________    / / /               \\ \\ \\ 
+///_/\\__/ / /       \\ \\ \/ // / /       \\ \/ / /             / / /______ \\ \\ \\__          \\ \\ \/ /        __/ / // / /  ___/__________/\\  / / /              __/ / / 
+//\\ \/___/ /         \\ \\  //_/ /         \\  / /             / / /_______\\ \\ \\___\\          \\ \\  /        /___/ // / /  /__________    \\ \/_/ /              /___/ /  
+// \\_____\\/           \\_\\/ \\_\\/           \/_/              \/__________/  \/___/           \\_\\/         \\___\\/ \/_/   \\____\\/    \\____\\/\\_\\/               \\___\\/   
+//@version=6
+indicator("Machine Learning Pivot Points (KNN) [SS]", overlay = true, max_labels_count = 500, max_lines_count = 500)
+g1 = "Pivots" 
+g2 = "Machine Learning Parameters" 
+g3 = "Helper Tables" 
+//User inputs 
+user_pivs = input.int(10, "Bars Left/Right", group = g1) 
+knn_clusters = input.int(2, "KNN Clusters", group = g2, tooltip = "The more clusters, the more strict the algorithm will be, suggested is 2.")
+len = input.int(20, "Pivot Window", group = g2, tooltip = "This determines the similarity lookback. As a rule, it should be at least double your pivot length. So if you are using 10 bars left/right, you should be looking at 20 bars min.")
+show_direction_helper = input.bool(true, "Show Directional Helper (Top Right)", group = g3, tooltip = "Gives you the current directional bias and confidence level.")
+show_stats = input.bool(true, "Show backtest table")
+// Regression metrics 
+get_historical_slope(float src, int start_index, int window_len) =>
+    float sumX  = 0.0
+    float sumY  = 0.0
+    float sumXY = 0.0
+    float sumX2 = 0.0
+    for i = start_index to (start_index + window_len - 1)
+        float x = i // Bar index or relative index
+        float y = src[i]
+        sumX  += x
+        sumY  += y
+        sumXY += x * y
+        sumX2 += x * x
+        
+    float slope = (window_len * sumXY - sumX * sumY) / (window_len * sumX2 - math.pow(sumX, 2))
+    slope
+// Defining pivots 
+piv_hi = ta.pivothigh(high, 10, 10)
+piv_lo = ta.pivotlow(low, 10, 10)
+// Array for regressions 
+var piv_hi_slopes = array.new_float()
+var piv_lo_slopes = array.new_float()
+if not na(piv_hi)
