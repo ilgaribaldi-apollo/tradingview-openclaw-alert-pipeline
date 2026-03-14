@@ -1,0 +1,22 @@
+slug: strategy-rsi
+summary: Simple RSI threshold-state indicator by HPotter. The original Pine keeps
+  a persistent directional state based on RSI > 70 or RSI < 30.
+signal_model: state_based
+inputs:
+  length: 12
+  oversold: 30
+  overbought: 70
+features:
+- rsi
+- threshold_state
+unsupported:
+- bar coloring
+entry_logic: Enter long when RSI crosses above the overbought threshold and the Pine
+  state flips to 1.
+exit_logic: Exit long when RSI crosses below the oversold threshold and the Pine state
+  flips to -1.
+caution_flags:
+- semantics_are_counterintuitive
+translation_notes: Original Pine sets pos=1 when RSI > Overbought and pos=-1 when
+  RSI < Oversold. Translation preserves those literal state semantics rather than
+  applying standard mean-reversion assumptions.

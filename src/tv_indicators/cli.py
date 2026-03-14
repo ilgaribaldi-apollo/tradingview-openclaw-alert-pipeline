@@ -1,12 +1,11 @@
 from __future__ import annotations
 
 import argparse
-import json
 from pathlib import Path
 
 from .frontend_index import export_frontend_indexes
 from .intake import ingest_indicator
-from .io import read_yaml
+from .io import dumps_json, read_yaml
 from .models import AnalysisRecord, IndicatorMetadata
 
 
@@ -76,4 +75,4 @@ def main() -> None:
         result = {"items": batch_results, "frontend": frontend}
     else:
         result = export_frontend_indexes()
-    print(json.dumps(result, indent=2))
+    print(dumps_json(result))

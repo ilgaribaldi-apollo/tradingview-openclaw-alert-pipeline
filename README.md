@@ -52,6 +52,7 @@ tvir export-frontend
 ```
 
 Ingest, backtest, and batch commands now refresh the frontend generated indexes automatically.
+JSON/CLI exports are sanitized so non-finite numeric values are written as `null` instead of invalid `NaN`/`Infinity` JSON.
 
 ## Opinionated workflow
 - use TradingView for discovery and Pine extraction
@@ -64,6 +65,11 @@ Ingest, backtest, and batch commands now refresh the frontend generated indexes 
 - `runtime/`, `db/`, and `api/` are now scaffolded for the paper-trading/runtime lane
 - the database foundation is SQL-first and Neon-ready so Python workers and the Next.js app can share one operational schema later
 - live order execution is still explicitly out of scope
+- runtime cadence is intentionally conservative:
+  - poll market data on candle boundaries, not tiny moves
+  - write signal events only on state changes / deduped triggers
+  - batch heartbeats and non-critical stats on an interval before writing to Neon
+  - keep frontend reads on aggregated/read-model-friendly queries where possible
 
 ## Market data source right now
 - default exchange: `coinbase`
@@ -76,5 +82,6 @@ Run:
 ```bash
 source .venv/bin/activate
 pytest -q
+ruff check src tests
 cd frontend && npm run lint && npm run typecheck && npm run build
 ```

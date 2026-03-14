@@ -37,5 +37,32 @@
 - sensitivity to fees/slippage
 - sensitivity to small parameter shifts
 
+## Decision-quality additions
+Every serious indicator review should also answer:
+- **Why does it rank well?**
+- **Where does it break?**
+- **Is the edge broad or narrow?**
+- **Is the logic interpretable enough for live monitoring?**
+- **What would disqualify it quickly?**
+
+Recommended derived fields:
+- `overall_score`
+- `confidence_score`
+- `robustness_score`
+- `live_readiness_score`
+- `strengths`
+- `weaknesses`
+- `failure_modes`
+- `next_tests`
+- `verdict`
+
+Recommended verdicts:
+- `reject`
+- `keep_researching`
+- `paper_trade_candidate`
+- `paper_trading`
+- `live_candidate`
+
 ## Rule
 A pretty chart is not evidence. Comparable outputs are evidence.
+A high return with weak reasoning is not a top candidate.

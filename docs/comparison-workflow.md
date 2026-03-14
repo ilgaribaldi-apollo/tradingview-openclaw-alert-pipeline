@@ -30,6 +30,15 @@ Leaderboard rows should record:
 - `symbol`
 - `timeframe`
 - `engine`
+- `configured_start`
+- `configured_end`
+- `actual_start`
+- `actual_end`
+- `bar_count`
+- `fees_bps`
+- `slippage_bps`
+- `entry_signal_count`
+- `exit_signal_count`
 - `total_return`
 - `max_drawdown`
 - `sharpe_ratio`

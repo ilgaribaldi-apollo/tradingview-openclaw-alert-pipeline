@@ -1,0 +1,17 @@
+slug: strategy-rsi
+title: Strategy RSI
+author: HPotter
+source_url: https://www.tradingview.com/chart/1TvyY4Wn/?symbol=BINANCE%3ABTCUSDT
+discovered_from: 'Search: RSI'
+extracted_at: '2026-03-14T22:33:00Z'
+pine_version: v3
+script_type: indicator
+classification: signal_capable
+repaint_risk: low
+status: strategy_ready
+tags:
+- rsi
+- momentum
+- threshold
+notes: Clean batch-validation script extracted from TradingView public source. Literal
+  strategy semantics preserved from the Pine state variable.

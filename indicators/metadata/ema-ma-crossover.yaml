@@ -8,7 +8,7 @@ pine_version: v3
 script_type: indicator
 classification: signal_capable
 repaint_risk: low
-status: strategy_ready
+status: benchmarked
 tags:
 - ema
 - ma

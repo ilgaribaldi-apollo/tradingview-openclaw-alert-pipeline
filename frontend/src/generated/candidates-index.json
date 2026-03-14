@@ -1,0 +1,121 @@
+{
+  "items": [
+    {
+      "confidenceScore": 34.0,
+      "failureModes": [],
+      "indicatorSlug": "machine-learning-pivot-points-knn-ss",
+      "killCriteria": [
+        "Do not promote without cross-pair confirmation"
+      ],
+      "latestRunId": "20260314T211459Z_machine-learning-pivot-points-knn-ss",
+      "liveReadinessScore": 33.27,
+      "overallScore": 79.7,
+      "pairs": [
+        "BTC/USD"
+      ],
+      "reasonCodes": [
+        "positive_return_profile",
+        "healthy_risk_adjusted_profile",
+        "contained_drawdown",
+        "single_pair_bias"
+      ],
+      "recommendedNextStep": "Expand pair/timeframe coverage and add fee/slippage stress tests.",
+      "robustnessScore": 29.7,
+      "runCount": 1,
+      "strengths": [
+        "Positive average return across recorded runs",
+        "Risk-adjusted returns look healthy",
+        "Drawdown has stayed relatively contained"
+      ],
+      "timeframes": [
+        "1h"
+      ],
+      "verdict": "keep_researching",
+      "weaknesses": [
+        "Too concentrated in one pair so far"
+      ]
+    },
+    {
+      "confidenceScore": 90.0,
+      "failureModes": [
+        "Risk-adjusted performance may collapse out of sample",
+        "Live behavior may be psychologically hard to hold"
+      ],
+      "indicatorSlug": "strategy-rsi",
+      "killCriteria": [
+        "Reject if drawdown expands materially in broader matrix testing"
+      ],
+      "latestRunId": "20260314T222944Z_strategy-rsi",
+      "liveReadinessScore": 45.95,
+      "overallScore": 62.38,
+      "pairs": [
+        "BTC/USD",
+        "DOGE/USD",
+        "ETH/USD",
+        "SOL/USD"
+      ],
+      "reasonCodes": [
+        "positive_return_profile",
+        "low_sharpe_confidence",
+        "drawdown_risk",
+        "cross_pair_signal"
+      ],
+      "recommendedNextStep": "Expand pair/timeframe coverage and add fee/slippage stress tests.",
+      "robustnessScore": 30.0,
+      "runCount": 4,
+      "strengths": [
+        "Positive average return across recorded runs",
+        "Evidence spans more than one pair"
+      ],
+      "timeframes": [
+        "1h"
+      ],
+      "verdict": "keep_researching",
+      "weaknesses": [
+        "Sharpe profile needs more evidence",
+        "Drawdown is too large for easy live confidence"
+      ]
+    },
+    {
+      "confidenceScore": 90.0,
+      "failureModes": [
+        "Risk-adjusted performance may collapse out of sample",
+        "Live behavior may be psychologically hard to hold"
+      ],
+      "indicatorSlug": "ema-ma-crossover",
+      "killCriteria": [
+        "Reject if drawdown expands materially in broader matrix testing"
+      ],
+      "latestRunId": "20260314T223000Z_ema-ma-crossover",
+      "liveReadinessScore": 45.0,
+      "overallScore": 30,
+      "pairs": [
+        "BTC/USD",
+        "DOGE/USD",
+        "ETH/USD",
+        "SOL/USD"
+      ],
+      "reasonCodes": [
+        "weak_return_profile",
+        "low_sharpe_confidence",
+        "drawdown_risk",
+        "cross_pair_signal"
+      ],
+      "recommendedNextStep": "Do not promote yet; either improve evidence quality or move on.",
+      "robustnessScore": 30.0,
+      "runCount": 4,
+      "strengths": [
+        "Evidence spans more than one pair"
+      ],
+      "timeframes": [
+        "1h"
+      ],
+      "verdict": "reject",
+      "weaknesses": [
+        "Return profile is still weak or too narrow",
+        "Sharpe profile needs more evidence",
+        "Drawdown is too large for easy live confidence"
+      ]
+    }
+  ]
+}

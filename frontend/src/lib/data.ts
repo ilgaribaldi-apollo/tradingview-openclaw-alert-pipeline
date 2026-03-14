@@ -1,8 +1,30 @@
+import candidates from "@/generated/candidates-index.json";
 import coverage from "@/generated/coverage-matrix.json";
 import dashboard from "@/generated/dashboard-summary.json";
+import diagnostics from "@/generated/diagnostics-index.json";
 import indicators from "@/generated/indicators-index.json";
+import liveReadiness from "@/generated/live-readiness-index.json";
 import rankings from "@/generated/rankings-index.json";
 import runs from "@/generated/runs-index.json";
+
+export type CandidateAssessment = {
+  indicatorSlug: string;
+  overallScore: number;
+  confidenceScore: number;
+  robustnessScore: number;
+  liveReadinessScore: number;
+  verdict: string;
+  reasonCodes: string[];
+  strengths: string[];
+  weaknesses: string[];
+  failureModes: string[];
+  killCriteria: string[];
+  recommendedNextStep: string;
+  runCount: number;
+  pairs: string[];
+  timeframes: string[];
+  latestRunId: string | null;
+};
 
 export type IndicatorRecord = {
   slug: string;
@@ -28,6 +50,7 @@ export type IndicatorRecord = {
     pairs: string[];
     timeframes: string[];
   };
+  assessment?: CandidateAssessment;
 };
 
 export type RunRecord = {
@@ -37,15 +60,37 @@ export type RunRecord = {
   pair: string;
   timeframe: string;
   dateRange: { start?: string; end?: string };
+  actualRange?: { start?: string; end?: string };
+  barCount?: number | null;
+  coverageStatus?: string;
+  coverageComplete?: boolean | null;
+  coverageGapDays?: number | null;
   feesBps?: number;
   slippageBps?: number;
-  metrics: Record<string, string | number | null>;
+  engine?: string;
+  metrics: Record<string, string | number | boolean | null>;
   summary: string;
 };
 
 export type RankingRecord = {
   indicatorSlug: string;
   runId: string;
+  exchange?: string;
+  pair?: string;
+  timeframe?: string;
+  engine?: string;
+  configuredStart?: string;
+  configuredEnd?: string;
+  actualStart?: string;
+  actualEnd?: string;
+  barCount?: number | null;
+  coverageStatus?: string;
+  coverageComplete?: boolean | null;
+  coverageGapDays?: number | null;
+  feesBps?: number | null;
+  slippageBps?: number | null;
+  entrySignalCount?: number | null;
+  exitSignalCount?: number | null;
   totalReturn: number | null;
   maxDrawdown: number | null;
   sharpeRatio: number | null;
@@ -55,7 +100,15 @@ export type RankingRecord = {
 };
 
 export function getDashboard() {
-  return dashboard;
+  return dashboard as {
+    totals: Record<string, number>;
+    statusCounts: Record<string, number>;
+    classificationCounts: Record<string, number>;
+    verdictCounts: Record<string, number>;
+    topRanked: RankingRecord[];
+    topCandidates: CandidateAssessment[];
+    recentRuns: RunRecord[];
+  };
 }
 
 export function getIndicators(): IndicatorRecord[] {
@@ -78,8 +131,42 @@ export function getIndicatorRuns(slug: string): RunRecord[] {
   return getRuns().filter((run) => run.indicatorSlug === slug);
 }
 
-export function getRankings(): { items: RankingRecord[]; failed: Array<Record<string, string>> } {
-  return rankings as { items: RankingRecord[]; failed: Array<Record<string, string>> };
+export function getRankings(): { items: RankingRecord[]; history?: RankingRecord[]; failed: Array<Record<string, string>> } {
+  return rankings as { items: RankingRecord[]; history?: RankingRecord[]; failed: Array<Record<string, string>> };
+}
+
+export function getCandidates(): CandidateAssessment[] {
+  return candidates.items as CandidateAssessment[];
+}
+
+export function getCandidate(slug: string): CandidateAssessment | undefined {
+  return getCandidates().find((item) => item.indicatorSlug === slug);
+}
+
+export function getDiagnostics() {
+  return diagnostics as {
+    items: Array<{
+      indicatorSlug: string;
+      verdict: string;
+      weaknesses: string[];
+      failureModes: string[];
+      killCriteria: string[];
+      reasonCodes: string[];
+    }>;
+  };
+}
+
+export function getLiveReadiness() {
+  return liveReadiness as {
+    items: Array<{
+      indicatorSlug: string;
+      liveReadinessScore: number;
+      verdict: string;
+      nextStage: string;
+      blockers: string[];
+      recommendedNextStep: string;
+    }>;
+  };
 }
 
 export function getCoverage() {
@@ -106,4 +193,10 @@ export function formatPercent(value: number | null | undefined) {
 export function formatNumber(value: number | null | undefined) {
   if (value === null || value === undefined || Number.isNaN(value)) return "—";
   return value.toFixed(2);
+}
+
+export function verdictTone(verdict: string) {
+  if (verdict.includes("paper") || verdict.includes("live")) return "emerald";
+  if (verdict.includes("keep")) return "amber";
+  return "zinc";
 }

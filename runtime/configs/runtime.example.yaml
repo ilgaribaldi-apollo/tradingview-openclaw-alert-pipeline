@@ -25,20 +25,38 @@ watchlist:
 workers:
   market_data:
     enabled: true
-    poll_seconds: 60
+    cadence:
+      poll_seconds: 60
+      align_to_candle_close: true
+      write_on_new_candle_only: true
+      lag_tolerance_seconds: 15
   signals:
     enabled: true
-    poll_seconds: 60
     primary_source: local_evaluator
     optional_adapters:
       - tradingview_webhook
+    cadence:
+      poll_seconds: 60
+      align_to_candle_close: true
+      evaluate_on_new_candle_only: true
+      lag_tolerance_seconds: 15
+    batching:
+      emit_on_state_change_only: true
+      dedupe_window_seconds: 21600
+      flush_interval_seconds: 30
+      max_batch_size: 25
   paper:
     enabled: true
     starting_equity: 100000
     max_open_positions: 5
+    flush_interval_seconds: 60
   ops:
     enabled: true
-    heartbeat_seconds: 30
+    heartbeat:
+      collect_seconds: 30
+      flush_interval_seconds: 120
+      max_batch_size: 20
+      include_stats: true
 
 research_alignment:
   required_backtest_fields:

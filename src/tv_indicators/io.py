@@ -2,10 +2,14 @@ from __future__ import annotations
 
 import csv
 import json
-from dataclasses import asdict
+import math
+from dataclasses import asdict, is_dataclass
+from datetime import date, datetime
+from decimal import Decimal
 from pathlib import Path
 from typing import Any
 
+import numpy as np
 import yaml
 
 from .models import AnalysisRecord, IndicatorMetadata
@@ -42,9 +46,34 @@ def read_yaml(path: Path) -> dict[str, Any]:
     return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
 
 
-def write_json(path: Path, data: dict[str, Any]) -> None:
+def sanitize_json_value(value: Any) -> Any:
+    if is_dataclass(value):
+        return sanitize_json_value(asdict(value))
+    if isinstance(value, dict):
+        return {str(key): sanitize_json_value(item) for key, item in value.items()}
+    if isinstance(value, (list, tuple, set)):
+        return [sanitize_json_value(item) for item in value]
+    if isinstance(value, Path):
+        return str(value)
+    if isinstance(value, (datetime, date)):
+        return value.isoformat()
+    if isinstance(value, (np.bool_, bool)):
+        return bool(value)
+    if isinstance(value, (np.integer, int)) and not isinstance(value, bool):
+        return int(value)
+    if isinstance(value, (np.floating, float, Decimal)):
+        numeric = float(value)
+        return numeric if math.isfinite(numeric) else None
+    return value
+
+
+def dumps_json(data: Any) -> str:
+    return json.dumps(sanitize_json_value(data), indent=2, sort_keys=True, allow_nan=False)
+
+
+def write_json(path: Path, data: Any) -> None:
     ensure_dir(path.parent)
-    path.write_text(json.dumps(data, indent=2, sort_keys=True), encoding="utf-8")
+    path.write_text(dumps_json(data), encoding="utf-8")
 
 
 def save_raw_source(slug: str, source_code: str) -> Path:

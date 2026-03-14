@@ -6,6 +6,8 @@ This sprint adds the structural base for the runtime lane without changing curre
 - `runtime/` folder scaffold for worker/config/service boundaries
 - `db/` folder scaffold with an initial Neon/Postgres schema snapshot
 - `api/` folder scaffold for shared runtime/webhook contracts
+- Python runtime config/models/helpers for candle cadence, signal dedupe/batching, and heartbeat batching
+- JSON export hardening so non-finite numbers are serialized as `null`, not invalid JSON tokens
 
 ## What was deliberately not added
 - no live execution code
@@ -30,3 +32,11 @@ When a strategy is promoted into runtime, its version record should carry forwar
 - notes
 
 That keeps runtime promotion grounded in actual research evidence instead of a thin summary.
+
+## Cadence rule of thumb
+- wake workers on a simple interval, but only **write** market/signal state when a fresh closed candle actually matters
+- treat `signal_events` as append-only state-change records, not a tick stream
+- flush heartbeats and non-critical worker stats in small batches
+- keep frontend/runtime reads on aggregated views or materialized/read-model-friendly queries where possible
+
+The point is simple: Neon should store operational truth, not every twitch of the market.

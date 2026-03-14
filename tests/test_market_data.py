@@ -10,12 +10,13 @@ from tv_indicators.market_data import MarketDataError, fetch_ohlcv
 
 
 class DummyExchange:
+    shared_calls = []
+
     def __init__(self, config=None):
         self.config = config or {}
-        self.calls = []
 
     def fetch_ohlcv(self, symbol, timeframe="1h", since=None, limit=1000):
-        self.calls.append(
+        self.__class__.shared_calls.append(
             {
                 "symbol": symbol,
                 "timeframe": timeframe,
@@ -65,7 +66,7 @@ def test_fetch_ohlcv_writes_and_uses_cache(tmp_path, monkeypatch):
         use_cache=True,
         limit=2,
     )
-    cache_file = tmp_path / "market" / "coinbase" / "ETH-USD_1h.csv"
+    cache_file = tmp_path / "market" / "coinbase" / "ETH-USD_1h_start-any_end-any.csv"
     assert cache_file.exists()
 
     class FailingExchange(DummyExchange):

@@ -9,13 +9,57 @@
         "summary": "Simple open-source crossover indicator comparing an SMA of close against an EMA of that SMA. Directional state flips when the EMA crosses the MA.",
         "translationNotes": "Original Pine sets pos=1 when xEMA < xMA and pos=-1 when xEMA > xMA. Strategy wrapper preserves that literal directional-state logic instead of imposing a different convention."
       },
+      "assessment": {
+        "confidenceScore": 90.0,
+        "failureModes": [
+          "Risk-adjusted performance may collapse out of sample",
+          "Live behavior may be psychologically hard to hold"
+        ],
+        "indicatorSlug": "ema-ma-crossover",
+        "killCriteria": [
+          "Reject if drawdown expands materially in broader matrix testing"
+        ],
+        "latestRunId": "20260314T223000Z_ema-ma-crossover",
+        "liveReadinessScore": 45.0,
+        "overallScore": 30,
+        "pairs": [
+          "BTC/USD",
+          "DOGE/USD",
+          "ETH/USD",
+          "SOL/USD"
+        ],
+        "reasonCodes": [
+          "weak_return_profile",
+          "low_sharpe_confidence",
+          "drawdown_risk",
+          "cross_pair_signal"
+        ],
+        "recommendedNextStep": "Do not promote yet; either improve evidence quality or move on.",
+        "robustnessScore": 30.0,
+        "runCount": 4,
+        "strengths": [
+          "Evidence spans more than one pair"
+        ],
+        "timeframes": [
+          "1h"
+        ],
+        "verdict": "reject",
+        "weaknesses": [
+          "Return profile is still weak or too narrow",
+          "Sharpe profile needs more evidence",
+          "Drawdown is too large for easy live confidence"
+        ]
+      },
       "author": "HPotter",
       "classification": "signal_capable",
       "coverage": {
         "pairs": [
-          "BTC/USD"
+          "BTC/USD",
+          "DOGE/USD",
+          "ETH/USD",
+          "SOL/USD"
         ],
-        "runCount": 1,
+        "runCount": 4,
         "timeframes": [
           "1h"
         ]
@@ -27,7 +71,7 @@
       "scriptType": "indicator",
       "slug": "ema-ma-crossover",
       "sourceUrl": "https://www.tradingview.com/chart/1TvyY4Wn/?symbol=BINANCE%3ABTCUSDT",
-      "status": "strategy_ready",
+      "status": "benchmarked",
       "tags": [
         "ema",
         "ma",
@@ -47,13 +91,48 @@
         "summary": "Visible Pine logic suggests a pivot-high/pivot-low structure model with historical slope calculations and a machine-learning flavored clustering layer that is not fully captured in the current extraction.",
         "translationNotes": "This is not a faithful full Pine port. It is a workflow validation using the visible extracted core ideas: pivot structure plus slope direction."
       },
+      "assessment": {
+        "confidenceScore": 34.0,
+        "failureModes": [],
+        "indicatorSlug": "machine-learning-pivot-points-knn-ss",
+        "killCriteria": [
+          "Do not promote without cross-pair confirmation"
+        ],
+        "latestRunId": "20260314T211459Z_machine-learning-pivot-points-knn-ss",
+        "liveReadinessScore": 33.27,
+        "overallScore": 79.7,
+        "pairs": [
+          "BTC/USD"
+        ],
+        "reasonCodes": [
+          "positive_return_profile",
+          "healthy_risk_adjusted_profile",
+          "contained_drawdown",
+          "single_pair_bias"
+        ],
+        "recommendedNextStep": "Expand pair/timeframe coverage and add fee/slippage stress tests.",
+        "robustnessScore": 29.7,
+        "runCount": 1,
+        "strengths": [
+          "Positive average return across recorded runs",
+          "Risk-adjusted returns look healthy",
+          "Drawdown has stayed relatively contained"
+        ],
+        "timeframes": [
+          "1h"
+        ],
+        "verdict": "keep_researching",
+        "weaknesses": [
+          "Too concentrated in one pair so far"
+        ]
+      },
       "author": "Steversteves",
       "classification": "signal_capable",
       "coverage": {
         "pairs": [
           "BTC/USD"
         ],
-        "runCount": 2,
+        "runCount": 1,
         "timeframes": [
           "1h"
         ]
@@ -72,6 +151,85 @@
         "structure"
       ],
       "title": "Machine Learning Pivot Points (KNN) [SS]"
+    },
+    {
+      "analysis": {
+        "cautionFlags": [
+          "semantics_are_counterintuitive"
+        ],
+        "signalModel": "state_based",
+        "summary": "Simple RSI threshold-state indicator by HPotter. The original Pine keeps a persistent directional state based on RSI > 70 or RSI < 30.",
+        "translationNotes": "Original Pine sets pos=1 when RSI > Overbought and pos=-1 when RSI < Oversold. Translation preserves those literal state semantics rather than applying standard mean-reversion assumptions."
+      },
+      "assessment": {
+        "confidenceScore": 90.0,
+        "failureModes": [
+          "Risk-adjusted performance may collapse out of sample",
+          "Live behavior may be psychologically hard to hold"
+        ],
+        "indicatorSlug": "strategy-rsi",
+        "killCriteria": [
+          "Reject if drawdown expands materially in broader matrix testing"
+        ],
+        "latestRunId": "20260314T222944Z_strategy-rsi",
+        "liveReadinessScore": 45.95,
+        "overallScore": 62.38,
+        "pairs": [
+          "BTC/USD",
+          "DOGE/USD",
+          "ETH/USD",
+          "SOL/USD"
+        ],
+        "reasonCodes": [
+          "positive_return_profile",
+          "low_sharpe_confidence",
+          "drawdown_risk",
+          "cross_pair_signal"
+        ],
+        "recommendedNextStep": "Expand pair/timeframe coverage and add fee/slippage stress tests.",
+        "robustnessScore": 30.0,
+        "runCount": 4,
+        "strengths": [
+          "Positive average return across recorded runs",
+          "Evidence spans more than one pair"
+        ],
+        "timeframes": [
+          "1h"
+        ],
+        "verdict": "keep_researching",
+        "weaknesses": [
+          "Sharpe profile needs more evidence",
+          "Drawdown is too large for easy live confidence"
+        ]
+      },
+      "author": "HPotter",
+      "classification": "signal_capable",
+      "coverage": {
+        "pairs": [
+          "BTC/USD",
+          "DOGE/USD",
+          "ETH/USD",
+          "SOL/USD"
+        ],
+        "runCount": 4,
+        "timeframes": [
+          "1h"
+        ]
+      },
+      "discoveredFrom": "Search: RSI",
+      "notes": "Clean batch-validation script extracted from TradingView public source. Literal strategy semantics preserved from the Pine state variable.",
+      "pineVersion": "v3",
+      "repaintRisk": "low",
+      "scriptType": "indicator",
+      "slug": "strategy-rsi",
+      "sourceUrl": "https://www.tradingview.com/chart/1TvyY4Wn/?symbol=BINANCE%3ABTCUSDT",
+      "status": "strategy_ready",
+      "tags": [
+        "rsi",
+        "momentum",
+        "threshold"
+      ],
+      "title": "Strategy RSI"
     }
   ]
 }

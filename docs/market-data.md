@@ -23,6 +23,7 @@ That means:
 - normalize OHLCV into a consistent DataFrame shape
 - keep timestamps UTC-aware
 - cache fetched data locally for reproducible comparisons
+- paginate forward until the configured end date or data exhaustion
 - fail loudly on unsupported exchanges or empty responses
 - keep exchange selection configurable via the test matrix
 
@@ -31,6 +32,7 @@ That means:
 - cache write + cache reuse
 - unsupported exchange error
 - empty OHLCV response error
+- pagination across multiple OHLCV pages until requested end date
 
 ## Future hardening ideas
 - add freshness/age checks on cached files

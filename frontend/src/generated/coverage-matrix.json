@@ -4,10 +4,37 @@
       "indicatorSlug": "ema-ma-crossover",
       "indicatorTitle": "EMA & MA Crossover",
       "pair": "BTC/USD",
-      "runId": "20260314T211809Z_ema-ma-crossover",
+      "runId": "20260314T222948Z_ema-ma-crossover",
       "status": "tested",
       "timeframe": "1h",
-      "totalReturn": 5.916389040562898
+      "totalReturn": -68.13072643392893
+    },
+    {
+      "indicatorSlug": "ema-ma-crossover",
+      "indicatorTitle": "EMA & MA Crossover",
+      "pair": "DOGE/USD",
+      "runId": "20260314T223000Z_ema-ma-crossover",
+      "status": "tested",
+      "timeframe": "1h",
+      "totalReturn": -60.49612015134834
+    },
+    {
+      "indicatorSlug": "ema-ma-crossover",
+      "indicatorTitle": "EMA & MA Crossover",
+      "pair": "ETH/USD",
+      "runId": "20260314T222952Z_ema-ma-crossover",
+      "status": "tested",
+      "timeframe": "1h",
+      "totalReturn": -72.97837194996629
+    },
+    {
+      "indicatorSlug": "ema-ma-crossover",
+      "indicatorTitle": "EMA & MA Crossover",
+      "pair": "SOL/USD",
+      "runId": "20260314T222956Z_ema-ma-crossover",
+      "status": "tested",
+      "timeframe": "1h",
+      "totalReturn": 23.99057624659189
     },
     {
       "indicatorSlug": "machine-learning-pivot-points-knn-ss",
@@ -17,10 +44,76 @@
       "status": "tested",
       "timeframe": "1h",
       "totalReturn": 5.2017612345131585
+    },
+    {
+      "indicatorSlug": "machine-learning-pivot-points-knn-ss",
+      "indicatorTitle": "Machine Learning Pivot Points (KNN) [SS]",
+      "pair": "DOGE/USD",
+      "runId": null,
+      "status": "analyzed",
+      "timeframe": "1h",
+      "totalReturn": null
+    },
+    {
+      "indicatorSlug": "machine-learning-pivot-points-knn-ss",
+      "indicatorTitle": "Machine Learning Pivot Points (KNN) [SS]",
+      "pair": "ETH/USD",
+      "runId": null,
+      "status": "analyzed",
+      "timeframe": "1h",
+      "totalReturn": null
+    },
+    {
+      "indicatorSlug": "machine-learning-pivot-points-knn-ss",
+      "indicatorTitle": "Machine Learning Pivot Points (KNN) [SS]",
+      "pair": "SOL/USD",
+      "runId": null,
+      "status": "analyzed",
+      "timeframe": "1h",
+      "totalReturn": null
+    },
+    {
+      "indicatorSlug": "strategy-rsi",
+      "indicatorTitle": "Strategy RSI",
+      "pair": "BTC/USD",
+      "runId": "20260314T222812Z_strategy-rsi",
+      "status": "tested",
+      "timeframe": "1h",
+      "totalReturn": 121.02621748898785
+    },
+    {
+      "indicatorSlug": "strategy-rsi",
+      "indicatorTitle": "Strategy RSI",
+      "pair": "DOGE/USD",
+      "runId": "20260314T222944Z_strategy-rsi",
+      "status": "tested",
+      "timeframe": "1h",
+      "totalReturn": -40.96684085583302
+    },
+    {
+      "indicatorSlug": "strategy-rsi",
+      "indicatorTitle": "Strategy RSI",
+      "pair": "ETH/USD",
+      "runId": "20260314T222843Z_strategy-rsi",
+      "status": "tested",
+      "timeframe": "1h",
+      "totalReturn": 11.294528074871446
+    },
+    {
+      "indicatorSlug": "strategy-rsi",
+      "indicatorTitle": "Strategy RSI",
+      "pair": "SOL/USD",
+      "runId": "20260314T222914Z_strategy-rsi",
+      "status": "tested",
+      "timeframe": "1h",
+      "totalReturn": 338.3035369382801
     }
   ],
   "pairs": [
-    "BTC/USD"
+    "BTC/USD",
+    "DOGE/USD",
+    "ETH/USD",
+    "SOL/USD"
   ],
   "timeframes": [
     "1h"
