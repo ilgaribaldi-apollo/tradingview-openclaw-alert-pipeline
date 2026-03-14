@@ -17,6 +17,11 @@ This directory is the implementation/workspace area for indicator intake, analys
 - `results/rankings/` — cross-run comparisons and failed-run logs
 - `docs/` — operator workflow docs and templates
 - `docs/workflow-blueprint.md` — end-to-end runbook for TradingView skill -> Python backtest -> frontend observability
+- `docs/runtime-foundation.md` — Sprint 2 runtime/db scaffold notes
+- `docs/neon-runtime-env.md` — Neon-ready environment and schema-apply notes
+- `runtime/` — paper-trading runtime scaffold (configs, workers, adapters, state)
+- `db/` — Neon/Postgres operational schema, queries, migrations, and seed examples
+- `api/` — shared runtime/webhook contracts for Python + Next.js boundaries
 - `src/tv_indicators/` — Python package and CLI
 - `frontend/` — Next.js + shadcn observability app reading normalized generated indexes
 
@@ -51,8 +56,14 @@ Ingest, backtest, and batch commands now refresh the frontend generated indexes 
 ## Opinionated workflow
 - use TradingView for discovery and Pine extraction
 - use Python for translation and testing
+- keep runtime state separate from research truth
 - only batch-test indicators that are actually ready
 - keep results append-only so comparisons stay honest
+
+## Sprint 2 runtime foundation
+- `runtime/`, `db/`, and `api/` are now scaffolded for the paper-trading/runtime lane
+- the database foundation is SQL-first and Neon-ready so Python workers and the Next.js app can share one operational schema later
+- live order execution is still explicitly out of scope
 
 ## Market data source right now
 - default exchange: `coinbase`
@@ -65,4 +76,5 @@ Run:
 ```bash
 source .venv/bin/activate
 pytest -q
+cd frontend && npm run lint && npm run typecheck && npm run build
 ```

@@ -1,0 +1,63 @@
+environment: development
+
+database:
+  provider: neon_postgres
+  url_env: DATABASE_URL
+  pooled_url_env: DATABASE_URL_POOLED
+
+runtime:
+  paper_trading_enabled: true
+  live_execution_enabled: false
+  source_of_truth:
+    research_artifacts: results/
+    operational_state: neon
+
+watchlist:
+  exchange: coinbase
+  symbols:
+    - BTC/USD
+    - ETH/USD
+    - SOL/USD
+    - DOGE/USD
+  timeframes:
+    - 1h
+
+workers:
+  market_data:
+    enabled: true
+    poll_seconds: 60
+  signals:
+    enabled: true
+    poll_seconds: 60
+    primary_source: local_evaluator
+    optional_adapters:
+      - tradingview_webhook
+  paper:
+    enabled: true
+    starting_equity: 100000
+    max_open_positions: 5
+  ops:
+    enabled: true
+    heartbeat_seconds: 30
+
+research_alignment:
+  required_backtest_fields:
+    - exchange
+    - symbol
+    - timeframe
+    - engine
+    - configured_start
+    - configured_end
+    - actual_start
+    - actual_end
+    - bar_count
+    - fees_bps
+    - slippage_bps
+    - entry_signal_count
+    - exit_signal_count
+    - total_return
+    - max_drawdown
+    - sharpe_ratio
+    - win_rate
+    - trade_count
+    - notes
