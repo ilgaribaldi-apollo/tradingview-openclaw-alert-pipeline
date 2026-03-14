@@ -31,6 +31,40 @@ class RuntimeModeConfig:
 
 
 @dataclass(slots=True)
+class RuntimeStrategyConfig:
+    slug: str
+    version: str
+    enabled: bool = True
+    minimum_candles: int = 200
+    watchlist_keys: list[str] = field(default_factory=list)
+    signal_columns: dict[str, str] = field(
+        default_factory=lambda: {
+            "entry_long": "entry",
+            "exit_long": "exit",
+            "entry_short": "entry_short",
+            "exit_short": "exit_short",
+            "flat": "flat",
+        }
+    )
+
+    def __post_init__(self) -> None:
+        if not self.slug.strip():
+            raise ValueError("strategies[].slug must not be empty")
+        if not self.version.strip():
+            raise ValueError("strategies[].version must not be empty")
+        _require_positive_int(self.minimum_candles, "strategies[].minimum_candles")
+        if not self.signal_columns:
+            raise ValueError("strategies[].signal_columns must include at least one signal mapping")
+
+    @property
+    def identity_key(self) -> str:
+        return f"{self.slug}@{self.version}"
+
+    def applies_to(self, watchlist_key: str) -> bool:
+        return not self.watchlist_keys or watchlist_key in self.watchlist_keys
+
+
+@dataclass(slots=True)
 class WatchlistEntry:
     venue: str
     symbol: str
@@ -72,7 +106,10 @@ class MarketDataCadenceConfig:
 
     def __post_init__(self) -> None:
         _require_positive_int(self.poll_seconds, "market_data.cadence.poll_seconds")
-        _require_non_negative_int(self.lag_tolerance_seconds, "market_data.cadence.lag_tolerance_seconds")
+        _require_non_negative_int(
+            self.lag_tolerance_seconds,
+            "market_data.cadence.lag_tolerance_seconds",
+        )
 
 
 @dataclass(slots=True)
@@ -84,7 +121,10 @@ class SignalCadenceConfig:
 
     def __post_init__(self) -> None:
         _require_positive_int(self.poll_seconds, "signals.cadence.poll_seconds")
-        _require_non_negative_int(self.lag_tolerance_seconds, "signals.cadence.lag_tolerance_seconds")
+        _require_non_negative_int(
+            self.lag_tolerance_seconds,
+            "signals.cadence.lag_tolerance_seconds",
+        )
 
 
 @dataclass(slots=True)
@@ -95,34 +135,57 @@ class SignalBatchingConfig:
     max_batch_size: int = 25
 
     def __post_init__(self) -> None:
-        _require_positive_int(self.dedupe_window_seconds, "signals.batching.dedupe_window_seconds")
-        _require_positive_int(self.flush_interval_seconds, "signals.batching.flush_interval_seconds")
+        _require_positive_int(
+            self.dedupe_window_seconds,
+            "signals.batching.dedupe_window_seconds",
+        )
+        _require_positive_int(
+            self.flush_interval_seconds,
+            "signals.batching.flush_interval_seconds",
+        )
         _require_positive_int(self.max_batch_size, "signals.batching.max_batch_size")
 
 
 @dataclass(slots=True)
 class MarketDataWorkerConfig:
     enabled: bool = True
+    worker_name: str = "market_data"
+    fetch_limit: int = 250
     cadence: MarketDataCadenceConfig = field(default_factory=MarketDataCadenceConfig)
+
+    def __post_init__(self) -> None:
+        if not self.worker_name.strip():
+            raise ValueError("market_data.worker_name must not be empty")
+        _require_positive_int(self.fetch_limit, "market_data.fetch_limit")
 
 
 @dataclass(slots=True)
 class SignalWorkerConfig:
     enabled: bool = True
+    worker_name: str = "signals"
     primary_source: str = "local_evaluator"
     optional_adapters: list[str] = field(default_factory=list)
+    candle_limit: int = 250
     cadence: SignalCadenceConfig = field(default_factory=SignalCadenceConfig)
     batching: SignalBatchingConfig = field(default_factory=SignalBatchingConfig)
+
+    def __post_init__(self) -> None:
+        if not self.worker_name.strip():
+            raise ValueError("signals.worker_name must not be empty")
+        _require_positive_int(self.candle_limit, "signals.candle_limit")
 
 
 @dataclass(slots=True)
 class PaperWorkerConfig:
     enabled: bool = True
+    worker_name: str = "paper"
     starting_equity: float = 100_000.0
     max_open_positions: int = 5
     flush_interval_seconds: int = 60
 
     def __post_init__(self) -> None:
+        if not self.worker_name.strip():
+            raise ValueError("paper.worker_name must not be empty")
         if self.starting_equity <= 0:
             raise ValueError("paper.starting_equity must be greater than 0")
         _require_positive_int(self.max_open_positions, "paper.max_open_positions")
@@ -145,7 +208,12 @@ class OpsHeartbeatConfig:
 @dataclass(slots=True)
 class OpsWorkerConfig:
     enabled: bool = True
+    worker_name: str = "ops"
     heartbeat: OpsHeartbeatConfig = field(default_factory=OpsHeartbeatConfig)
+
+    def __post_init__(self) -> None:
+        if not self.worker_name.strip():
+            raise ValueError("ops.worker_name must not be empty")
 
 
 @dataclass(slots=True)
@@ -168,10 +236,14 @@ class RuntimeConfig:
     runtime: RuntimeModeConfig
     watchlist: WatchlistConfig
     workers: RuntimeWorkersConfig
+    strategies: list[RuntimeStrategyConfig] = field(default_factory=list)
     research_alignment: ResearchAlignmentConfig = field(default_factory=ResearchAlignmentConfig)
 
     def watchlist_entries(self) -> list[WatchlistEntry]:
         return self.watchlist.expand()
+
+    def enabled_strategies(self) -> list[RuntimeStrategyConfig]:
+        return [strategy for strategy in self.strategies if strategy.enabled]
 
 
 @dataclass(slots=True)
@@ -184,6 +256,7 @@ class MarketDataPollDecision:
 
 @dataclass(slots=True)
 class SignalEventCandidate:
+    strategy_slug: str
     strategy_version: str
     venue: str
     symbol: str
@@ -194,6 +267,7 @@ class SignalEventCandidate:
     signal_source: str = "local_evaluator"
     state: str | None = None
     price: float | None = None
+    candle_open_at: datetime | None = None
     context: dict[str, Any] = field(default_factory=dict)
 
     @property
@@ -201,8 +275,12 @@ class SignalEventCandidate:
         return f"{self.venue}:{self.symbol}:{self.timeframe}"
 
     @property
+    def strategy_identity(self) -> str:
+        return f"{self.strategy_slug}@{self.strategy_version}"
+
+    @property
     def identity_key(self) -> str:
-        return f"{self.strategy_version}:{self.watchlist_key}"
+        return f"{self.strategy_identity}:{self.watchlist_key}"
 
 
 @dataclass(slots=True)
@@ -214,6 +292,30 @@ class WorkerHeartbeatSample:
     lag_seconds: int | None = None
     stats: dict[str, Any] = field(default_factory=dict)
     error_summary: str | None = None
+
+
+@dataclass(slots=True)
+class MarketDataWorkerRunResult:
+    due_watchlists: int
+    refreshed_watchlists: int
+    latest_candle_close_at_by_watchlist: dict[str, datetime]
+    heartbeat_rows_written: int
+
+
+@dataclass(slots=True)
+class SignalWorkerRunResult:
+    due_watchlists: int
+    evaluated_watchlists: int
+    accepted_events: int
+    persisted_events: int
+    pending_events: int
+    heartbeat_rows_written: int
+
+
+@dataclass(slots=True)
+class OpsWorkerRunResult:
+    pending_heartbeats: int
+    heartbeat_rows_written: int
 
 
 def _require_positive_int(value: int, label: str) -> None:

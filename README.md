@@ -49,6 +49,13 @@ tvir ingest --metadata path/to/metadata.yaml --source path/to/source.pine --anal
 tvir backtest example-ema-cross --config default-matrix.yaml --exchange coinbase --symbol BTC/USD --timeframe 1h
 tvir batch --status strategy_ready --config default-matrix.yaml
 tvir export-frontend
+
+tvir runtime worker market-data --config runtime.example.yaml --once
+tvir runtime worker signals --config runtime.example.yaml --once
+tvir runtime worker ops --config runtime.example.yaml --once
+
+tvir runtime read-model signals --config runtime.example.yaml --limit 20
+tvir runtime read-model ops --config runtime.example.yaml --limit 20
 ```
 
 Ingest, backtest, and batch commands now refresh the frontend generated indexes automatically.
@@ -61,10 +68,15 @@ JSON/CLI exports are sanitized so non-finite numeric values are written as `null
 - only batch-test indicators that are actually ready
 - keep results append-only so comparisons stay honest
 
-## Sprint 2 runtime foundation
-- `runtime/`, `db/`, and `api/` are now scaffolded for the paper-trading/runtime lane
+## Runtime foundation status
+- `runtime/`, `db/`, and `api/` now include the first real runtime worker foundation
 - the database foundation is SQL-first and Neon-ready so Python workers and the Next.js app can share one operational schema later
 - live order execution is still explicitly out of scope
+- current runtime support now includes:
+  - candle-aligned market-data polling
+  - local strategy signal evaluation with deduped `signal_events` writes
+  - batched/upserted `runtime_worker_status` heartbeats
+  - read-model helper plumbing for future `/signals` and `/ops`
 - runtime cadence is intentionally conservative:
   - poll market data on candle boundaries, not tiny moves
   - write signal events only on state changes / deduped triggers

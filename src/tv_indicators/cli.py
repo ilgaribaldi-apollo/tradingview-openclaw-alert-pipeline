@@ -43,6 +43,39 @@ def main() -> None:
         help="No-op placeholder for future formatting flags; exports are always pretty JSON",
     )
 
+    runtime_parser = subparsers.add_parser(
+        "runtime",
+        help="Run runtime workers or inspect Neon read models",
+    )
+    runtime_subparsers = runtime_parser.add_subparsers(
+        dest="runtime_command",
+        required=True,
+    )
+
+    runtime_worker_parser = runtime_subparsers.add_parser(
+        "worker",
+        help="Run a runtime worker lane",
+    )
+    runtime_worker_parser.add_argument("lane", choices=["market-data", "signals", "ops"])
+    runtime_worker_parser.add_argument("--config", default="runtime.example.yaml")
+    runtime_worker_parser.add_argument(
+        "--once",
+        action="store_true",
+        help="Run one iteration and flush",
+    )
+    runtime_worker_parser.add_argument(
+        "--iterations",
+        type=int,
+        help="Optional bounded iteration count for non-once runs",
+    )
+
+    runtime_read_model_parser = runtime_subparsers.add_parser(
+        "read-model", help="Inspect read-model-friendly runtime queries"
+    )
+    runtime_read_model_parser.add_argument("view", choices=["signals", "ops"])
+    runtime_read_model_parser.add_argument("--config", default="runtime.example.yaml")
+    runtime_read_model_parser.add_argument("--limit", type=int, default=20)
+
     args = parser.parse_args()
     if args.command == "ingest":
         metadata = IndicatorMetadata(**read_yaml(Path(args.metadata)))
@@ -73,6 +106,57 @@ def main() -> None:
         )
         frontend = export_frontend_indexes()
         result = {"items": batch_results, "frontend": frontend}
+    elif args.command == "runtime":
+        result = _run_runtime_command(args)
     else:
         result = export_frontend_indexes()
     print(dumps_json(result))
+
+
+def _run_runtime_command(args: argparse.Namespace) -> object:
+    from .runtime import (
+        CCXTClosedCandlePoller,
+        LocalStrategySignalEvaluator,
+        MarketDataWorkerRunner,
+        OpsWorkerRunner,
+        PostgresRuntimeStore,
+        RuntimeReadModelQueries,
+        SignalWorkerRunner,
+        load_runtime_config,
+    )
+
+    config = load_runtime_config(args.config)
+    store = PostgresRuntimeStore.from_database_config(config.database)
+
+    if args.runtime_command == "read-model":
+        queries = RuntimeReadModelQueries(store)
+        if args.view == "signals":
+            return queries.recent_signals(limit=args.limit)
+        return queries.ops_overview(limit=args.limit)
+
+    lane = args.lane
+    if lane == "market-data":
+        runner = MarketDataWorkerRunner(
+            config=config,
+            poller=CCXTClosedCandlePoller(),
+            store=store,
+        )
+    elif lane == "signals":
+        runner = SignalWorkerRunner(
+            config=config,
+            poller=CCXTClosedCandlePoller(),
+            evaluator=LocalStrategySignalEvaluator(strategies=config.enabled_strategies()),
+            store=store,
+        )
+    else:
+        runner = OpsWorkerRunner(config=config, store=store)
+
+    if args.once:
+        return runner.run_once(force_flush=True)
+
+    runner.run_forever(max_iterations=args.iterations)
+    return {
+        "lane": lane,
+        "iterations": args.iterations,
+        "status": "completed" if args.iterations is not None else "running",
+    }

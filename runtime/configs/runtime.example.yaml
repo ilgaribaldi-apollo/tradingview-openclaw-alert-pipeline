@@ -22,9 +22,23 @@ watchlist:
   timeframes:
     - 1h
 
+strategies:
+  - slug: strategy-rsi
+    version: local-v1
+    enabled: true
+    minimum_candles: 200
+    watchlist_keys:
+      - coinbase:BTC/USD:1h
+      - coinbase:ETH/USD:1h
+    signal_columns:
+      entry_long: entry
+      exit_long: exit
+
 workers:
   market_data:
     enabled: true
+    worker_name: market_data
+    fetch_limit: 250
     cadence:
       poll_seconds: 60
       align_to_candle_close: true
@@ -32,9 +46,11 @@ workers:
       lag_tolerance_seconds: 15
   signals:
     enabled: true
+    worker_name: signals
     primary_source: local_evaluator
     optional_adapters:
       - tradingview_webhook
+    candle_limit: 250
     cadence:
       poll_seconds: 60
       align_to_candle_close: true
@@ -47,11 +63,13 @@ workers:
       max_batch_size: 25
   paper:
     enabled: true
+    worker_name: paper
     starting_equity: 100000
     max_open_positions: 5
     flush_interval_seconds: 60
   ops:
     enabled: true
+    worker_name: ops
     heartbeat:
       collect_seconds: 30
       flush_interval_seconds: 120

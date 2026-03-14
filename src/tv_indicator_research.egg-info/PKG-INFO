@@ -7,6 +7,7 @@ Description-Content-Type: text/markdown
 Requires-Dist: ccxt>=4.4.0
 Requires-Dist: numpy>=1.26
 Requires-Dist: pandas>=2.2
+Requires-Dist: psycopg[binary]>=3.2
 Requires-Dist: PyYAML>=6.0
 Requires-Dist: vectorbt>=0.26
 Provides-Extra: dev
@@ -25,14 +26,20 @@ This directory is the implementation/workspace area for indicator intake, analys
 - `indicators/strategies/` — backtestable Python wrappers/adaptations
 - `indicators/catalog/` — aggregate catalog/index files
 - `data/market/` — cached OHLCV datasets for repeatable comparisons
-- `backtests/configs/` — backtest matrices and run configs
+- `backtests/configs/` — backtest matrices and run configs (default crypto basket includes BTC/ETH/SOL/DOGE)
 - `backtests/runners/` — execution scripts or runner notes
 - `backtests/suites/` — smoke/benchmark suite definitions
 - `results/runs/` — immutable per-run output folders
 - `results/rankings/` — cross-run comparisons and failed-run logs
 - `docs/` — operator workflow docs and templates
-- `docs/workflow-blueprint.md` — end-to-end runbook for TradingView skill -> Python backtest
+- `docs/workflow-blueprint.md` — end-to-end runbook for TradingView skill -> Python backtest -> frontend observability
+- `docs/runtime-foundation.md` — Sprint 2 runtime/db scaffold notes
+- `docs/neon-runtime-env.md` — Neon-ready environment and schema-apply notes
+- `runtime/` — paper-trading runtime scaffold (configs, workers, adapters, state)
+- `db/` — Neon/Postgres operational schema, queries, migrations, and seed examples
+- `api/` — shared runtime/webhook contracts for Python + Next.js boundaries
 - `src/tv_indicators/` — Python package and CLI
+- `frontend/` — Next.js + shadcn observability app reading normalized generated indexes
 
 ## Rules
 1. Never edit files in `indicators/raw/` after intake.
@@ -55,12 +62,42 @@ Examples:
 
 ```bash
 tvir ingest --metadata path/to/metadata.yaml --source path/to/source.pine --analysis path/to/analysis.yaml
-tvir backtest example-ema-cross --config default-matrix.yaml --exchange binance --symbol BTC/USDT --timeframe 1h
-tvir batch --status strategy_ready --config default-matrix.yaml --exchange binance
+tvir backtest example-ema-cross --config default-matrix.yaml --exchange coinbase --symbol BTC/USD --timeframe 1h
+tvir batch --status strategy_ready --config default-matrix.yaml
+tvir export-frontend
 ```
+
+Ingest, backtest, and batch commands now refresh the frontend generated indexes automatically.
+JSON/CLI exports are sanitized so non-finite numeric values are written as `null` instead of invalid `NaN`/`Infinity` JSON.
 
 ## Opinionated workflow
 - use TradingView for discovery and Pine extraction
 - use Python for translation and testing
+- keep runtime state separate from research truth
 - only batch-test indicators that are actually ready
 - keep results append-only so comparisons stay honest
+
+## Sprint 2 runtime foundation
+- `runtime/`, `db/`, and `api/` are now scaffolded for the paper-trading/runtime lane
+- the database foundation is SQL-first and Neon-ready so Python workers and the Next.js app can share one operational schema later
+- live order execution is still explicitly out of scope
+- runtime cadence is intentionally conservative:
+  - poll market data on candle boundaries, not tiny moves
+  - write signal events only on state changes / deduped triggers
+  - batch heartbeats and non-critical stats on an interval before writing to Neon
+  - keep frontend reads on aggregated/read-model-friendly queries where possible
+
+## Market data source right now
+- default exchange: `coinbase`
+- default crypto basket: `BTC/USD`, `ETH/USD`, `SOL/USD`, `DOGE/USD`
+- reason: Binance public API returned a 451 geo-restriction error from this environment, so Coinbase is the current reliable default
+
+## Tests
+Run:
+
+```bash
+source .venv/bin/activate
+pytest -q
+ruff check src tests
+cd frontend && npm run lint && npm run typecheck && npm run build
+```

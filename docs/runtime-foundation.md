@@ -1,25 +1,51 @@
-# Runtime Foundation — Sprint 2
+# Runtime Foundation — Sprint 2/3 bridge
 
-This sprint adds the structural base for the runtime lane without changing current research/backtesting behavior.
+This slice moves the runtime lane from pure scaffold to a first real Python worker foundation without changing current research/backtesting behavior.
 
 ## What was added
-- `runtime/` folder scaffold for worker/config/service boundaries
-- `db/` folder scaffold with an initial Neon/Postgres schema snapshot
-- `api/` folder scaffold for shared runtime/webhook contracts
-- Python runtime config/models/helpers for candle cadence, signal dedupe/batching, and heartbeat batching
-- JSON export hardening so non-finite numbers are serialized as `null`, not invalid JSON tokens
+- real Python worker runners for:
+  - market-data cadence/freshness polling
+  - local signal evaluation + deduped signal event flushing
+  - ops/runtime heartbeat flushing
+- a Neon/Postgres store adapter boundary (`PostgresRuntimeStore`) for:
+  - deduped `signal_events`
+  - upserted `runtime_worker_status`
+  - read-model-friendly `/signals` and `/ops` query helpers
+- runtime strategy config so signal workers know which pinned strategy/version pairs to evaluate
+- example runtime env + seed files for safe local Neon bootstrap
+- tests covering worker loops, buffering, store behavior, and read-model helpers
 
 ## What was deliberately not added
 - no live execution code
 - no broker credentials
-- no active webhook server
-- no runtime worker process implementation yet
+- no broker/exchange write paths
+- no webhook server
+- no paper position executor yet
 
 ## Database choice
-The repo root is Python and the UI lives in `frontend/`. For now, the lowest-risk foundation is:
+The repo root is Python and the UI lives in `frontend/`. The lowest-risk runtime foundation is still:
 - SQL-first schema at repo root
-- shared `DATABASE_URL`/Neon contract for Python + Next.js
-- future Drizzle adoption only when the frontend actually starts querying/mutating runtime tables
+- shared `DATABASE_URL` / `DATABASE_URL_POOLED` contract for Python + Next.js
+- a pragmatic Python `psycopg` store boundary now
+- future Drizzle adoption only when the frontend starts owning richer DB reads/mutations
+
+## Current worker shape
+### Market data
+- polls on candle-aligned cadence
+- fetches only recent closed candles
+- updates in-memory freshness state
+- writes worker heartbeat/status only
+- does **not** persist tick streams or candle snapshots to Neon
+
+### Signals
+- fetches recent closed candles on the same conservative cadence
+- evaluates configured local strategy modules
+- emits signal events only when state changes / dedupe permits
+- flushes batched `signal_events` to Neon
+
+### Ops
+- writes batched/upserted `runtime_worker_status`
+- keeps `/ops` future reads cheap and current-state-oriented
 
 ## Research/runtime alignment rule
 When a strategy is promoted into runtime, its version record should carry forward the richer backtest evidence already emitted by this project, including:
@@ -34,9 +60,9 @@ When a strategy is promoted into runtime, its version record should carry forwar
 That keeps runtime promotion grounded in actual research evidence instead of a thin summary.
 
 ## Cadence rule of thumb
-- wake workers on a simple interval, but only **write** market/signal state when a fresh closed candle actually matters
+- wake workers on a simple interval, but only **write** when a fresh closed candle actually matters
 - treat `signal_events` as append-only state-change records, not a tick stream
-- flush heartbeats and non-critical worker stats in small batches
-- keep frontend/runtime reads on aggregated views or materialized/read-model-friendly queries where possible
+- batch heartbeats and non-critical worker stats in small batches
+- keep frontend/runtime reads on aggregated views or read-model-friendly queries where possible
 
 The point is simple: Neon should store operational truth, not every twitch of the market.

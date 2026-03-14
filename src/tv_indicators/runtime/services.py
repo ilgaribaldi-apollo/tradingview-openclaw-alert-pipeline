@@ -8,11 +8,11 @@ from ..io import sanitize_json_value
 from .models import (
     MarketDataCadenceConfig,
     MarketDataPollDecision,
+    OpsHeartbeatConfig,
     SignalBatchingConfig,
     SignalCadenceConfig,
     SignalEventCandidate,
     WorkerHeartbeatSample,
-    OpsHeartbeatConfig,
 )
 
 _TIMEFRAME_UNITS = {
@@ -52,7 +52,9 @@ class CandleAlignedCadencePlanner:
         interval = timeframe_to_seconds(timeframe)
         closed = self.latest_closed_candle_at(now=now_utc, timeframe=timeframe)
         next_close = closed + timedelta(seconds=interval)
-        return next_close + timedelta(seconds=getattr(self.cadence, "lag_tolerance_seconds", 0))
+        return next_close + timedelta(
+            seconds=getattr(self.cadence, "lag_tolerance_seconds", 0)
+        )
 
     def should_poll(
         self,
@@ -64,7 +66,9 @@ class CandleAlignedCadencePlanner:
     ) -> MarketDataPollDecision:
         now_utc = _as_utc(now)
         latest_closed = self.latest_closed_candle_at(now=now_utc, timeframe=timeframe)
-        available_at = latest_closed + timedelta(seconds=getattr(self.cadence, "lag_tolerance_seconds", 0))
+        available_at = latest_closed + timedelta(
+            seconds=getattr(self.cadence, "lag_tolerance_seconds", 0)
+        )
         next_poll_at = self.next_poll_at(now=now_utc, timeframe=timeframe)
 
         if getattr(self.cadence, "align_to_candle_close", True) and now_utc < available_at:
@@ -104,7 +108,12 @@ class CandleAlignedCadencePlanner:
 
 
 class SignalEventBuffer:
-    def __init__(self, config: SignalBatchingConfig, *, initial_now: datetime | None = None) -> None:
+    def __init__(
+        self,
+        config: SignalBatchingConfig,
+        *,
+        initial_now: datetime | None = None,
+    ) -> None:
         self.config = config
         self._buffer: list[SignalEventCandidate] = []
         self._last_state_by_identity: dict[str, str] = {}
@@ -136,12 +145,21 @@ class SignalEventBuffer:
         self._buffer.append(event)
         return True
 
-    def flush_due(self, *, now: datetime | None = None, force: bool = False) -> list[SignalEventCandidate]:
+    def flush_due(
+        self,
+        *,
+        now: datetime | None = None,
+        force: bool = False,
+    ) -> list[SignalEventCandidate]:
         if not self._buffer:
             return []
         now_utc = _as_utc(now or datetime.now(UTC))
         elapsed = (now_utc - self._last_flush_at).total_seconds()
-        if not force and len(self._buffer) < self.config.max_batch_size and elapsed < self.config.flush_interval_seconds:
+        if (
+            not force
+            and len(self._buffer) < self.config.max_batch_size
+            and elapsed < self.config.flush_interval_seconds
+        ):
             return []
         batch = list(self._buffer)
         self._buffer.clear()
@@ -149,13 +167,20 @@ class SignalEventBuffer:
         return batch
 
     def _expire_dedupe_keys(self, now: datetime) -> None:
-        expired = [key for key, expires_at in self._dedupe_expiry_by_key.items() if expires_at < now]
+        expired = [
+            key for key, expires_at in self._dedupe_expiry_by_key.items() if expires_at < now
+        ]
         for key in expired:
             self._dedupe_expiry_by_key.pop(key, None)
 
 
 class WorkerHeartbeatBuffer:
-    def __init__(self, config: OpsHeartbeatConfig, *, initial_now: datetime | None = None) -> None:
+    def __init__(
+        self,
+        config: OpsHeartbeatConfig,
+        *,
+        initial_now: datetime | None = None,
+    ) -> None:
         self.config = config
         self._pending: dict[tuple[str, str], WorkerHeartbeatSample] = {}
         self._last_flush_at = _as_utc(initial_now or datetime.now(UTC))
@@ -170,12 +195,21 @@ class WorkerHeartbeatBuffer:
         if existing is None or _as_utc(heartbeat.heartbeat_at) >= _as_utc(existing.heartbeat_at):
             self._pending[key] = heartbeat
 
-    def flush_due(self, *, now: datetime | None = None, force: bool = False) -> list[WorkerHeartbeatSample]:
+    def flush_due(
+        self,
+        *,
+        now: datetime | None = None,
+        force: bool = False,
+    ) -> list[WorkerHeartbeatSample]:
         if not self._pending:
             return []
         now_utc = _as_utc(now or datetime.now(UTC))
         elapsed = (now_utc - self._last_flush_at).total_seconds()
-        if not force and len(self._pending) < self.config.max_batch_size and elapsed < self.config.flush_interval_seconds:
+        if (
+            not force
+            and len(self._pending) < self.config.max_batch_size
+            and elapsed < self.config.flush_interval_seconds
+        ):
             return []
         batch = sorted(self._pending.values(), key=lambda item: (item.lane, item.worker_name))
         self._pending.clear()
@@ -187,6 +221,7 @@ def build_signal_dedupe_key(event: SignalEventCandidate) -> str:
     closed = _as_utc(event.candle_close_at).isoformat()
     return "|".join(
         [
+            event.strategy_slug,
             event.strategy_version,
             event.watchlist_key,
             event.signal_type,
@@ -200,7 +235,12 @@ def _signal_state_fingerprint(event: SignalEventCandidate) -> str:
         "signal_type": event.signal_type,
         "state": event.state or event.signal_type,
     }
-    return json.dumps(sanitize_json_value(payload), sort_keys=True, separators=(",", ":"), allow_nan=False)
+    return json.dumps(
+        sanitize_json_value(payload),
+        sort_keys=True,
+        separators=(",", ":"),
+        allow_nan=False,
+    )
 
 
 def _as_utc(value: datetime) -> datetime:
