@@ -13,7 +13,7 @@ export default function RunsPage() {
       <SectionHeading
         eyebrow="Runs"
         title="Run log"
-        body="Immutable run artifacts are the heartbeat of this project. If a result cannot be traced back to a run directory, it does not count."
+        body="Immutable run artifacts are the heartbeat of this project. If a result cannot be traced back to a run directory, it does not count. Experiment-linked runs now surface directly instead of hiding behind indicator-only labels."
       />
 
       <Card className="glass rounded-[2rem] text-white">
@@ -25,16 +25,17 @@ export default function RunsPage() {
             <TableHeader>
               <TableRow className="border-white/10 hover:bg-transparent">
                 <TableHead className="text-zinc-400">Run</TableHead>
-                <TableHead className="text-zinc-400">Indicator</TableHead>
+                <TableHead className="text-zinc-400">Strategy unit</TableHead>
                 <TableHead className="text-zinc-400">Pair / TF</TableHead>
                 <TableHead className="text-zinc-400">Return</TableHead>
+                <TableHead className="text-zinc-400">Coverage</TableHead>
                 <TableHead className="text-zinc-400">Engine note</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {runs.length === 0 ? (
                 <TableRow className="border-white/10 hover:bg-transparent">
-                  <TableCell colSpan={5} className="py-10 text-center text-zinc-400">
+                  <TableCell colSpan={6} className="py-10 text-center text-zinc-400">
                     No runs yet.
                   </TableCell>
                 </TableRow>
@@ -47,14 +48,22 @@ export default function RunsPage() {
                       </Link>
                     </TableCell>
                     <TableCell>
-                      <Link href={`/indicators/${run.indicatorSlug}`} className="text-zinc-300 hover:text-white">
-                        {run.indicatorSlug}
-                      </Link>
+                      <div>
+                        <p className="text-zinc-200">{run.experimentSlug || run.indicatorSlug}</p>
+                        <p className="text-xs text-zinc-500">
+                          {run.experimentSlug
+                            ? `${run.indicatorSlug} · ${run.experimentFamily || "family?"} · ${run.experimentVariant || "variant?"}`
+                            : run.indicatorSlug}
+                        </p>
+                      </div>
                     </TableCell>
                     <TableCell className="text-zinc-300">{run.pair} · {run.timeframe}</TableCell>
                     <TableCell className="text-emerald-300">{formatPercent(typeof run.metrics.total_return === "number" ? run.metrics.total_return : null)}</TableCell>
                     <TableCell>
-                      <Badge className="border-white/10 bg-white/8 text-zinc-200">{String(run.metrics.notes ?? "—")}</Badge>
+                      <Badge className="border-white/10 bg-white/8 text-zinc-200">{run.coverageStatus || "—"}</Badge>
+                    </TableCell>
+                    <TableCell>
+                      <Badge className="border-white/10 bg-white/8 text-zinc-200">{String(run.engine || run.metrics.notes || "—")}</Badge>
                     </TableCell>
                   </TableRow>
                 ))

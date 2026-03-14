@@ -13,7 +13,7 @@ export default function RankingsPage() {
       <SectionHeading
         eyebrow="Rankings"
         title="Leaderboard with caveats attached"
-        body="If a result looks great but the assumptions are garbage, the UI should say so right next to the number."
+        body="If a result looks great but the assumptions are garbage, the UI should say so right next to the number. Experiments now show up as first-class research units, not just hidden notes."
       />
 
       <Card className="glass rounded-[2rem] text-white">
@@ -24,7 +24,8 @@ export default function RankingsPage() {
           <Table>
             <TableHeader>
               <TableRow className="border-white/10 hover:bg-transparent">
-                <TableHead className="text-zinc-400">Indicator</TableHead>
+                <TableHead className="text-zinc-400">Indicator / Experiment</TableHead>
+                <TableHead className="text-zinc-400">Market</TableHead>
                 <TableHead className="text-zinc-400">Return</TableHead>
                 <TableHead className="text-zinc-400">Drawdown</TableHead>
                 <TableHead className="text-zinc-400">Sharpe</TableHead>
@@ -35,7 +36,7 @@ export default function RankingsPage() {
             <TableBody>
               {rankings.items.length === 0 ? (
                 <TableRow className="border-white/10 hover:bg-transparent">
-                  <TableCell colSpan={6} className="py-10 text-center text-zinc-400">
+                  <TableCell colSpan={7} className="py-10 text-center text-zinc-400">
                     No rankings yet. Backtest first, then export the frontend indexes.
                   </TableCell>
                 </TableRow>
@@ -43,9 +44,19 @@ export default function RankingsPage() {
                 rankings.items.map((row) => (
                   <TableRow key={row.runId} className="border-white/10 hover:bg-white/4">
                     <TableCell>
-                      <Link href={`/runs/${row.runId}`} className="font-medium text-white hover:text-cyan-300">
-                        {row.indicatorSlug}
-                      </Link>
+                      <div>
+                        <Link href={`/runs/${row.runId}`} className="font-medium text-white hover:text-cyan-300">
+                          {row.experimentSlug || row.indicatorSlug}
+                        </Link>
+                        <p className="text-xs text-zinc-500">
+                          {row.experimentSlug
+                            ? `${row.indicatorSlug} · ${row.experimentFamily || "family?"} · ${row.experimentVariant || "variant?"}`
+                            : row.indicatorSlug}
+                        </p>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-sm text-zinc-300">
+                      {row.pair || "—"} · {row.timeframe || "—"}
                     </TableCell>
                     <TableCell className="text-emerald-300">{formatPercent(row.totalReturn)}</TableCell>
                     <TableCell className="text-rose-300">{formatPercent(row.maxDrawdown)}</TableCell>

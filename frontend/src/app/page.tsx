@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, CandlestickChart, Radar, Rows3, Signal, ShieldCheck } from "lucide-react";
+import { ArrowRight, Beaker, CandlestickChart, Radar, Rows3, Signal, ShieldCheck } from "lucide-react";
 import { MetricCard } from "@/components/metric-card";
 import { SectionHeading } from "@/components/section-heading";
 import { Badge } from "@/components/ui/badge";
@@ -132,8 +132,9 @@ export default function Home() {
         </Card>
       </section>
 
-      <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
+      <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-6">
         <QuickLink href="/coverage" label="Coverage matrix" body="See what has actually been tested by pair and timeframe." icon={<Rows3 className="h-5 w-5 text-violet-300" />} />
+        <QuickLink href="/experiments" label="Experiments" body="Compare variants, combinations, and richer research units beyond one-indicator wrappers." icon={<Beaker className="h-5 w-5 text-fuchsia-300" />} />
         <QuickLink href="/rankings" label="Leaderboard" body="Compare return quality with caveats right next to it." icon={<CandlestickChart className="h-5 w-5 text-emerald-300" />} />
         <QuickLink href="/runs" label="Run log" body="Inspect individual assumptions, summaries, and output artifacts." icon={<Radar className="h-5 w-5 text-cyan-300" />} />
         <QuickLink href="/signals" label="Runtime signals" body="Read the real signal feed emitted by promoted runtime strategy versions." icon={<Signal className="h-5 w-5 text-cyan-300" />} />
