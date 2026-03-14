@@ -176,6 +176,7 @@ tvir batch --status strategy_ready --config default-matrix.yaml --exchange coinb
 ### Outputs
 - successful runs append to `results/rankings/leaderboard.csv`
 - failures append to `results/rankings/failed_runs.csv`
+- frontend generated indexes refresh automatically for observability
 
 ---
 

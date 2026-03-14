@@ -22,13 +22,13 @@ def main() -> None:
     backtest_parser = subparsers.add_parser("backtest", help="Run one indicator backtest")
     backtest_parser.add_argument("slug", help="Indicator slug")
     backtest_parser.add_argument("--config", default="default-matrix.yaml")
-    backtest_parser.add_argument("--exchange", default="binance")
+    backtest_parser.add_argument("--exchange")
     backtest_parser.add_argument("--symbol")
     backtest_parser.add_argument("--timeframe")
 
     batch_parser = subparsers.add_parser("batch", help="Run a batch of indicators")
     batch_parser.add_argument("--config", default="default-matrix.yaml")
-    batch_parser.add_argument("--exchange", default="binance")
+    batch_parser.add_argument("--exchange")
     batch_parser.add_argument(
         "--status",
         action="append",
@@ -50,6 +50,8 @@ def main() -> None:
         source_code = Path(args.source).read_text(encoding="utf-8")
         analysis = AnalysisRecord(**read_yaml(Path(args.analysis))) if args.analysis else None
         result = ingest_indicator(metadata=metadata, source_code=source_code, analysis=analysis)
+        frontend = export_frontend_indexes()
+        result = {**result, "frontend": frontend}
     elif args.command == "backtest":
         from .backtest import run_indicator_backtest
 
@@ -60,14 +62,18 @@ def main() -> None:
             symbol=args.symbol,
             timeframe=args.timeframe,
         )
+        frontend = export_frontend_indexes()
+        result = {**result, "frontend": frontend}
     elif args.command == "batch":
         from .batch import run_batch
 
-        result = run_batch(
+        batch_results = run_batch(
             statuses=set(args.status) if args.status else None,
             config_name=args.config,
             exchange=args.exchange,
         )
+        frontend = export_frontend_indexes()
+        result = {"items": batch_results, "frontend": frontend}
     else:
         result = export_frontend_indexes()
     print(json.dumps(result, indent=2))

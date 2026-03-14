@@ -37,3 +37,4 @@ That means:
 - add schema validation for required columns
 - add smoke test against the live default exchange
 - add multi-exchange fallback order when one provider fails
+- add provider-health status into the frontend observability surface

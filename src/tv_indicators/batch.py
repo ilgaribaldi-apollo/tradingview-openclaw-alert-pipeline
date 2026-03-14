@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-from pathlib import Path
 from typing import Any
 
 from .backtest import run_indicator_backtest
+from .config import load_test_matrix
 from .io import read_yaml
 from .paths import METADATA_DIR
 from .reporting import append_failed_run
@@ -27,16 +27,31 @@ def run_batch(
     exchange: str | None = None,
 ) -> list[dict[str, Any]]:
     results = []
+    matrix = load_test_matrix(config_name)
+    chosen_exchange = exchange or matrix.default_exchange
     for slug in list_indicator_slugs(statuses=statuses):
-        try:
-            results.append(
-                run_indicator_backtest(
-                    indicator_slug=slug,
-                    config_name=config_name,
-                    exchange=exchange,
-                )
-            )
-        except Exception as exc:  # noqa: BLE001
-            append_failed_run(slug, str(exc))
-            results.append({"indicator_slug": slug, "error": str(exc)})
+        for symbol in matrix.symbols:
+            for timeframe in matrix.timeframes:
+                try:
+                    results.append(
+                        run_indicator_backtest(
+                            indicator_slug=slug,
+                            config_name=config_name,
+                            exchange=chosen_exchange,
+                            symbol=symbol,
+                            timeframe=timeframe,
+                        )
+                    )
+                except Exception as exc:  # noqa: BLE001
+                    error = f"{symbol} {timeframe} :: {exc}"
+                    append_failed_run(slug, error)
+                    results.append(
+                        {
+                            "indicator_slug": slug,
+                            "exchange": chosen_exchange,
+                            "symbol": symbol,
+                            "timeframe": timeframe,
+                            "error": str(exc),
+                        }
+                    )
     return results

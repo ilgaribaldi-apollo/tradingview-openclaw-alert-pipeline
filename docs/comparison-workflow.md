@@ -42,5 +42,5 @@ Leaderboard rows should record:
 - analyze and classify them
 - translate only promising ones
 - mark them `strategy_ready`
-- run batch tests on that status group
-- inspect leaderboard + individual run summaries
+- run batch tests on that status group across the full benchmark matrix
+- inspect leaderboard + frontend observability views + individual run summaries
