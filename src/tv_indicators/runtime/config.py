@@ -51,6 +51,7 @@ def load_runtime_config(path: str | Path = "runtime.example.yaml") -> RuntimeCon
             "LIVE_EXECUTION_ENABLED",
             runtime_data.get("live_execution_enabled", False),
         ),
+        strategy_selection=str(runtime_data.get("strategy_selection", "promoted_registry")),
         source_of_truth=RuntimeSourceOfTruth(
             **(runtime_data.get("source_of_truth") or {})
         ),

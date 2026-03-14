@@ -42,6 +42,11 @@ def main() -> None:
         action="store_true",
         help="No-op placeholder for future formatting flags; exports are always pretty JSON",
     )
+    frontend_parser.add_argument(
+        "--runtime-config",
+        default="runtime.example.yaml",
+        help="Runtime config used for optional Neon read-model snapshots",
+    )
 
     runtime_parser = subparsers.add_parser(
         "runtime",
@@ -76,6 +81,31 @@ def main() -> None:
     runtime_read_model_parser.add_argument("--config", default="runtime.example.yaml")
     runtime_read_model_parser.add_argument("--limit", type=int, default=20)
 
+    runtime_promote_parser = runtime_subparsers.add_parser(
+        "promote",
+        help="Promote one backtested strategy version into the runtime registry",
+    )
+    runtime_promote_parser.add_argument("slug", help="Indicator/strategy slug")
+    runtime_promote_parser.add_argument("--run-id", required=True)
+    runtime_promote_parser.add_argument("--version", required=True)
+    runtime_promote_parser.add_argument(
+        "--verdict",
+        default="paper_trade_candidate",
+        choices=[
+            "reject",
+            "keep_researching",
+            "paper_trade_candidate",
+            "paper_trading",
+            "live_candidate",
+            "live_shadow",
+            "live_enabled",
+        ],
+    )
+    runtime_promote_parser.add_argument("--rationale", required=True)
+    runtime_promote_parser.add_argument("--actor", default="apollo")
+    runtime_promote_parser.add_argument("--owner")
+    runtime_promote_parser.add_argument("--config", default="runtime.example.yaml")
+
     args = parser.parse_args()
     if args.command == "ingest":
         metadata = IndicatorMetadata(**read_yaml(Path(args.metadata)))
@@ -109,7 +139,7 @@ def main() -> None:
     elif args.command == "runtime":
         result = _run_runtime_command(args)
     else:
-        result = export_frontend_indexes()
+        result = export_frontend_indexes(runtime_config_name=args.runtime_config)
     print(dumps_json(result))
 
 
@@ -122,6 +152,8 @@ def _run_runtime_command(args: argparse.Namespace) -> object:
         PostgresRuntimeStore,
         RuntimeReadModelQueries,
         SignalWorkerRunner,
+        build_strategy_promotion_payload,
+        load_promoted_runtime_strategies,
         load_runtime_config,
     )
 
@@ -134,6 +166,20 @@ def _run_runtime_command(args: argparse.Namespace) -> object:
             return queries.recent_signals(limit=args.limit)
         return queries.ops_overview(limit=args.limit)
 
+    if args.runtime_command == "promote":
+        payload = build_strategy_promotion_payload(
+            slug=args.slug,
+            run_id=args.run_id,
+            version=args.version,
+            verdict=args.verdict,
+            rationale=args.rationale,
+            actor=args.actor,
+            owner=args.owner,
+        )
+        result = store.apply_strategy_promotion(payload)
+        result["frontend"] = export_frontend_indexes(runtime_config_name=args.config)
+        return result
+
     lane = args.lane
     if lane == "market-data":
         runner = MarketDataWorkerRunner(
@@ -142,10 +188,18 @@ def _run_runtime_command(args: argparse.Namespace) -> object:
             store=store,
         )
     elif lane == "signals":
+        promoted_strategies = load_promoted_runtime_strategies(
+            store.list_runtime_strategy_bindings()
+        )
+        if not promoted_strategies:
+            raise RuntimeError(
+                "No runtime-enabled promoted strategy bindings found. "
+                "Run `tvir runtime promote ...` first."
+            )
         runner = SignalWorkerRunner(
             config=config,
             poller=CCXTClosedCandlePoller(),
-            evaluator=LocalStrategySignalEvaluator(strategies=config.enabled_strategies()),
+            evaluator=LocalStrategySignalEvaluator(strategies=promoted_strategies),
             store=store,
         )
     else:

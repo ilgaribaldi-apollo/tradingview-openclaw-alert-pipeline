@@ -7,7 +7,7 @@ This directory is the implementation/workspace area for indicator intake, analys
 - `indicators/metadata/` — sidecar metadata files
 - `indicators/analysis/` — structured interpretation before translation
 - `indicators/normalized/` — minimally cleaned/standardized variants
-- `indicators/strategies/` — backtestable Python wrappers/adaptations
+- `indicators/strategies/` — backtestable Python wrappers/adaptations (+ pinned `runtime.yaml` files for promoted runtime versions)
 - `indicators/catalog/` — aggregate catalog/index files
 - `data/market/` — cached OHLCV datasets for repeatable comparisons
 - `backtests/configs/` — backtest matrices and run configs (default crypto basket includes BTC/ETH/SOL/DOGE)
@@ -49,6 +49,13 @@ tvir ingest --metadata path/to/metadata.yaml --source path/to/source.pine --anal
 tvir backtest example-ema-cross --config default-matrix.yaml --exchange coinbase --symbol BTC/USD --timeframe 1h
 tvir batch --status strategy_ready --config default-matrix.yaml
 tvir export-frontend
+
+tvir runtime promote strategy-rsi \
+  --config runtime.example.yaml \
+  --run-id 20260314T222812Z_strategy-rsi \
+  --version strategy-rsi-v1 \
+  --verdict paper_trade_candidate \
+  --rationale "Best current conservative candidate for runtime monitoring"
 
 tvir runtime worker market-data --config runtime.example.yaml --once
 tvir runtime worker signals --config runtime.example.yaml --once

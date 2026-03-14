@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Activity, CandlestickChart, Layers3, Radar, Rows3 } from "lucide-react";
+import { Activity, CandlestickChart, Layers3, Radar, Rows3, Signal, ShieldCheck } from "lucide-react";
 
 const nav = [
   { href: "/", label: "Overview", icon: Activity },
@@ -7,6 +7,8 @@ const nav = [
   { href: "/coverage", label: "Coverage", icon: Rows3 },
   { href: "/rankings", label: "Rankings", icon: CandlestickChart },
   { href: "/runs", label: "Runs", icon: Radar },
+  { href: "/signals", label: "Signals", icon: Signal },
+  { href: "/ops", label: "Ops", icon: ShieldCheck },
 ];
 
 export function AppShell({ children }: { children: React.ReactNode }) {

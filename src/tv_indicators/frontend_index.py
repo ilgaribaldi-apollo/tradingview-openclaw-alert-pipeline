@@ -4,18 +4,22 @@ import csv
 import json
 import math
 from collections import Counter
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
 from .io import read_yaml, write_json
 from .paths import ANALYSIS_DIR, METADATA_DIR, RUNS_DIR
+from .runtime import RuntimeReadModelQueries, load_runtime_config
+from .runtime.promotion import summarize_promoted_bindings
+from .runtime.store import PostgresRuntimeStore, RuntimeStoreError
 
 FRONTEND_GENERATED_DIR = Path(__file__).resolve().parents[2] / "frontend" / "src" / "generated"
 RANKINGS_PATH = Path(__file__).resolve().parents[2] / "results" / "rankings" / "leaderboard.csv"
 FAILED_RUNS_PATH = Path(__file__).resolve().parents[2] / "results" / "rankings" / "failed_runs.csv"
 
 
-def export_frontend_indexes() -> dict[str, str]:
+def export_frontend_indexes(*, runtime_config_name: str = "runtime.example.yaml") -> dict[str, str]:
     FRONTEND_GENERATED_DIR.mkdir(parents=True, exist_ok=True)
 
     runs = _load_runs()
@@ -26,6 +30,7 @@ def export_frontend_indexes() -> dict[str, str]:
     diagnostics = _build_diagnostics(candidates)
     live_readiness = _build_live_readiness(candidates)
     dashboard = _build_dashboard(indicators, runs, rankings, candidates)
+    runtime_snapshots = _load_runtime_snapshots(runtime_config_name=runtime_config_name)
 
     paths = {
         "dashboard": _write_json("dashboard-summary.json", dashboard),
@@ -36,6 +41,8 @@ def export_frontend_indexes() -> dict[str, str]:
         "candidates": _write_json("candidates-index.json", {"items": candidates}),
         "diagnostics": _write_json("diagnostics-index.json", diagnostics),
         "live_readiness": _write_json("live-readiness-index.json", {"items": live_readiness}),
+        "runtime_signals": _write_json("runtime-signals.json", runtime_snapshots["signals"]),
+        "runtime_ops": _write_json("runtime-ops.json", runtime_snapshots["ops"]),
     }
     return {key: str(value) for key, value in paths.items()}
 
@@ -418,6 +425,47 @@ def _build_dashboard(
         "topCandidates": top_candidates,
         "recentRuns": recent_runs,
     }
+
+
+def _load_runtime_snapshots(*, runtime_config_name: str) -> dict[str, dict[str, Any]]:
+    generated_at = datetime.now(UTC).isoformat()
+    try:
+        config = load_runtime_config(runtime_config_name)
+        store = PostgresRuntimeStore.from_database_config(config.database)
+        queries = RuntimeReadModelQueries(store)
+        bindings = store.list_runtime_strategy_bindings(limit=12)
+        promoted = summarize_promoted_bindings(bindings)
+        return {
+            "signals": {
+                "status": "ok",
+                "generatedAt": generated_at,
+                "items": queries.recent_signals(limit=50),
+                "promotedStrategies": promoted,
+            },
+            "ops": {
+                "status": "ok",
+                "generatedAt": generated_at,
+                "items": queries.ops_overview(limit=20),
+                "promotedStrategies": promoted,
+            },
+        }
+    except RuntimeStoreError as exc:
+        return _empty_runtime_snapshots(generated_at=generated_at, error=str(exc))
+    except Exception as exc:
+        return _empty_runtime_snapshots(generated_at=generated_at, error=str(exc))
+
+
+
+def _empty_runtime_snapshots(*, generated_at: str, error: str) -> dict[str, dict[str, Any]]:
+    payload = {
+        "status": "unavailable",
+        "generatedAt": generated_at,
+        "error": error,
+        "items": [],
+        "promotedStrategies": [],
+    }
+    return {"signals": dict(payload), "ops": dict(payload)}
+
 
 
 def _avg(values: list[float | int | None]) -> float | None:

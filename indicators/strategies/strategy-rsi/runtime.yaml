@@ -1,0 +1,7 @@
+minimum_candles: 200
+watchlist_keys:
+  - coinbase:BTC/USD:1h
+  - coinbase:ETH/USD:1h
+signal_columns:
+  entry_long: entry
+  exit_long: exit

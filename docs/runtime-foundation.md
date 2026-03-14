@@ -10,10 +10,15 @@ This slice moves the runtime lane from pure scaffold to a first real Python work
 - a Neon/Postgres store adapter boundary (`PostgresRuntimeStore`) for:
   - deduped `signal_events`
   - upserted `runtime_worker_status`
+  - explicit strategy promotion writes into `strategy_registry`, `strategy_versions`, and `promotion_decisions`
   - read-model-friendly `/signals` and `/ops` query helpers
-- runtime strategy config so signal workers know which pinned strategy/version pairs to evaluate
+- strict promotion-bound runtime selection:
+  - `tvir runtime promote ...` writes the promoted/version-pinned runtime record
+  - signal workers now load only runtime-enabled promoted strategy/version rows
+  - promoted versions must carry a pinned `indicators/strategies/<slug>/runtime.yaml` config hash
+- frontend runtime snapshots for first real `/signals` and `/ops` pages
 - example runtime env + seed files for safe local Neon bootstrap
-- tests covering worker loops, buffering, store behavior, and read-model helpers
+- tests covering worker loops, buffering, store behavior, promotion bridging, and read-model helpers
 
 ## What was deliberately not added
 - no live execution code

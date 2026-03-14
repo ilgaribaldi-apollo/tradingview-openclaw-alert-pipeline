@@ -9,6 +9,13 @@ from .models import (
     SignalWorkerRunResult,
     WorkerHeartbeatSample,
 )
+from .promotion import (
+    StrategyPromotionError,
+    StrategyPromotionPayload,
+    build_strategy_promotion_payload,
+    load_promoted_runtime_strategies,
+    summarize_promoted_bindings,
+)
 from .read_models import RuntimeReadModelQueries
 from .runners import MarketDataWorkerRunner, OpsWorkerRunner, SignalWorkerRunner
 from .services import (
@@ -35,6 +42,8 @@ __all__ = [
     "RuntimeReadModelQueries",
     "RuntimeStore",
     "RuntimeStoreError",
+    "StrategyPromotionError",
+    "StrategyPromotionPayload",
     "SignalEvaluator",
     "SignalEventBuffer",
     "SignalEventCandidate",
@@ -43,6 +52,9 @@ __all__ = [
     "WorkerHeartbeatBuffer",
     "WorkerHeartbeatSample",
     "build_signal_dedupe_key",
+    "build_strategy_promotion_payload",
+    "load_promoted_runtime_strategies",
     "load_runtime_config",
+    "summarize_promoted_bindings",
     "timeframe_to_seconds",
 ]

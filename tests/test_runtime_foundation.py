@@ -29,6 +29,7 @@ from tv_indicators.runtime.models import (
     WatchlistConfig,
     WorkerHeartbeatSample,
 )
+from tv_indicators.runtime.promotion import StrategyPromotionPayload
 from tv_indicators.runtime.read_models import RuntimeReadModelQueries
 from tv_indicators.runtime.runners import (
     MarketDataWorkerRunner,
@@ -94,6 +95,14 @@ class FakeDatabaseHarness:
         self.calls: list[tuple[str, list[Any] | None]] = []
         self.watchlist_ids: dict[tuple[str, str, str], str] = {}
         self.strategy_version_ids: dict[tuple[str, str], str] = {}
+        self.strategy_registry_rows: dict[str, tuple[str, str]] = {}
+        self.registry_upsert_returning: tuple[Any, ...] | None = ("registry-1",)
+        self.version_upsert_returning: tuple[Any, ...] | None = ("strategy-version-1",)
+        self.promotion_decision_returning: tuple[Any, ...] | None = (
+            "promotion-decision-1",
+            datetime(2026, 3, 14, 15, 0, tzinfo=UTC),
+        )
+        self.runtime_strategy_rows: list[dict[str, Any]] = []
         self.signal_insert_returning: list[tuple[Any, ...]] = []
         self.heartbeat_insert_returning: list[tuple[Any, ...]] = []
         self.signal_feed_rows: list[dict[str, Any]] = []
@@ -152,6 +161,35 @@ class FakeCursor:
             self._fetchone = (identifier,)
             self.description = [("id",)]
             return
+        if normalized.startswith("select id, current_stage from strategy_registry"):
+            slug = str(params[0])
+            row = self.harness.strategy_registry_rows.get(slug)
+            self._fetchone = None if row is None else row
+            self.description = [("id",), ("current_stage",)]
+            return
+        if normalized.startswith("insert into strategy_registry"):
+            if self.harness.registry_upsert_returning is None:
+                self._fetchone = None
+            else:
+                self._fetchone = self.harness.registry_upsert_returning
+            self.description = [("id",)]
+            return
+        if normalized.startswith("update strategy_versions set is_active = false"):
+            return
+        if normalized.startswith("insert into strategy_versions"):
+            if self.harness.version_upsert_returning is None:
+                self._fetchone = None
+            else:
+                self._fetchone = self.harness.version_upsert_returning
+            self.description = [("id",)]
+            return
+        if normalized.startswith("insert into promotion_decisions"):
+            if self.harness.promotion_decision_returning is None:
+                self._fetchone = None
+            else:
+                self._fetchone = self.harness.promotion_decision_returning
+            self.description = [("id",), ("decided_at",)]
+            return
         if normalized.startswith("select sv.id"):
             key = (str(params[0]), str(params[1]))
             identifier = self.harness.strategy_version_ids.get(key)
@@ -171,6 +209,9 @@ class FakeCursor:
             return
         if "from runtime_ops_overview" in normalized:
             self._fetchall = list(self.harness.ops_rows)
+            return
+        if "from strategy_registry sr join strategy_versions sv" in normalized:
+            self._fetchall = list(self.harness.runtime_strategy_rows)
             return
 
         raise AssertionError(f"Unhandled SQL in fake cursor: {normalized}")
@@ -340,12 +381,13 @@ def make_candles(*, start: datetime, count: int, timeframe_hours: int = 1) -> li
     return candles
 
 
-def test_load_runtime_config_reads_cadence_batching_and_strategy_fields():
+def test_load_runtime_config_reads_cadence_batching_and_runtime_registry_selection():
     config = load_runtime_config()
 
     assert config.database.provider == "neon_postgres"
     assert config.watchlist.exchange == "coinbase"
     assert config.watchlist_entries()[0].key == "coinbase:BTC/USD:1h"
+    assert config.runtime.strategy_selection == "promoted_registry"
     assert config.workers.market_data.worker_name == "market_data"
     assert config.workers.market_data.fetch_limit == 250
     assert config.workers.market_data.cadence.align_to_candle_close is True
@@ -354,7 +396,7 @@ def test_load_runtime_config_reads_cadence_batching_and_strategy_fields():
     assert config.workers.signals.batching.emit_on_state_change_only is True
     assert config.workers.ops.worker_name == "ops"
     assert config.workers.ops.heartbeat.flush_interval_seconds == 120
-    assert config.enabled_strategies()[0].identity_key == "strategy-rsi@local-v1"
+    assert config.enabled_strategies() == []
 
 
 def test_timeframe_to_seconds_supports_common_units():
@@ -967,3 +1009,68 @@ def test_postgres_runtime_store_upserts_heartbeats_and_read_models():
     assert signals[0].dedupe_key == "dedupe-1"
     assert ops_rows[0].worker_name == "signals"
     assert ops_rows[0].tracked_feeds == 1
+
+
+def test_postgres_runtime_store_applies_promotions_and_lists_runtime_strategy_bindings():
+    harness = FakeDatabaseHarness()
+    harness.strategy_registry_rows["strategy-rsi"] = ("registry-1", "benchmarked")
+    harness.registry_upsert_returning = ("registry-1",)
+    harness.version_upsert_returning = ("sv-1",)
+    harness.promotion_decision_returning = (
+        "decision-1",
+        datetime(2026, 3, 14, 15, 0, tzinfo=UTC),
+    )
+    harness.runtime_strategy_rows = [
+        {
+            "slug": "strategy-rsi",
+            "title": "Strategy RSI",
+            "current_stage": "paper_trade_candidate",
+            "runtime_enabled": True,
+            "paper_enabled": False,
+            "version": "promoted-v1",
+            "code_path": "indicators/strategies/strategy-rsi/logic.py",
+            "config_path": "indicators/strategies/strategy-rsi/runtime.yaml",
+            "config_hash": "abc123",
+            "backtest_evidence": {"symbol": "BTC/USD", "timeframe": "1h", "trade_count": 42},
+            "promotion_requirements": {"runtime": {"minimum_candles": 200}},
+            "latest_verdict": "paper_trade_candidate",
+            "latest_rationale": "Good enough for conservative shadow runtime.",
+            "decided_at": datetime(2026, 3, 14, 15, 0, tzinfo=UTC),
+        }
+    ]
+    store = PostgresRuntimeStore(harness.connection_factory)
+    payload = StrategyPromotionPayload(
+        slug="strategy-rsi",
+        title="Strategy RSI",
+        source_indicator_slug="strategy-rsi",
+        owner="apollo",
+        version="promoted-v1",
+        code_path="indicators/strategies/strategy-rsi/logic.py",
+        config_path="indicators/strategies/strategy-rsi/runtime.yaml",
+        config_hash="abc123",
+        source_commit="deadbeef",
+        backtest_evidence={"symbol": "BTC/USD", "timeframe": "1h", "trade_count": 42},
+        promotion_requirements={"runtime": {"minimum_candles": 200}},
+        registry_metadata={"latest_promoted_run_id": "run-1"},
+        verdict="paper_trade_candidate",
+        stage_to="paper_trade_candidate",
+        rationale="Good enough for conservative shadow runtime.",
+        reason_codes=["positive_return_profile"],
+        strengths=["Cross-pair evidence exists"],
+        weaknesses=[],
+        kill_criteria=["Reject if drawdown doubles"],
+        actor="apollo",
+        runtime_enabled=True,
+        paper_enabled=False,
+    )
+
+    result = store.apply_strategy_promotion(payload)
+    bindings = store.list_runtime_strategy_bindings(limit=10)
+
+    assert result["stage_from"] == "benchmarked"
+    assert result["stage_to"] == "paper_trade_candidate"
+    assert result["runtime_enabled"] is True
+    assert bindings[0]["slug"] == "strategy-rsi"
+    assert bindings[0]["version"] == "promoted-v1"
+    assert harness.commit_count == 1
+    assert harness.rollback_count == 0

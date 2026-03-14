@@ -8,6 +8,7 @@ database:
 runtime:
   paper_trading_enabled: true
   live_execution_enabled: false
+  strategy_selection: promoted_registry
   source_of_truth:
     research_artifacts: results/
     operational_state: neon
@@ -21,18 +22,6 @@ watchlist:
     - DOGE/USD
   timeframes:
     - 1h
-
-strategies:
-  - slug: strategy-rsi
-    version: local-v1
-    enabled: true
-    minimum_candles: 200
-    watchlist_keys:
-      - coinbase:BTC/USD:1h
-      - coinbase:ETH/USD:1h
-    signal_columns:
-      entry_long: entry
-      exit_long: exit
 
 workers:
   market_data:

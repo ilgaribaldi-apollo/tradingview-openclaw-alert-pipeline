@@ -5,6 +5,8 @@ import diagnostics from "@/generated/diagnostics-index.json";
 import indicators from "@/generated/indicators-index.json";
 import liveReadiness from "@/generated/live-readiness-index.json";
 import rankings from "@/generated/rankings-index.json";
+import runtimeOps from "@/generated/runtime-ops.json";
+import runtimeSignals from "@/generated/runtime-signals.json";
 import runs from "@/generated/runs-index.json";
 
 export type CandidateAssessment = {
@@ -99,6 +101,59 @@ export type RankingRecord = {
   notes: string;
 };
 
+export type RuntimeSignalRecord = {
+  id: string;
+  signal_at: string;
+  strategy_slug: string;
+  strategy_title?: string | null;
+  venue: string;
+  symbol: string;
+  timeframe: string;
+  signal_type: string;
+  signal_source: string;
+  price?: number | null;
+  dedupe_key: string;
+  context: Record<string, unknown>;
+  strategy_version: string;
+};
+
+export type RuntimeOpsRecord = {
+  worker_name: string;
+  lane: string;
+  status: string;
+  heartbeat_at: string;
+  lag_seconds?: number | null;
+  error_summary?: string | null;
+  tracked_feeds: number;
+};
+
+export type PromotedStrategyRecord = {
+  slug: string;
+  title?: string | null;
+  version: string;
+  stage: string;
+  runtime_enabled: boolean;
+  paper_enabled: boolean;
+  latest_verdict?: string | null;
+  latest_rationale?: string | null;
+  decided_at?: string | null;
+  pair?: string | null;
+  timeframe?: string | null;
+  total_return?: number | null;
+  max_drawdown?: number | null;
+  sharpe_ratio?: number | null;
+  trade_count?: number | null;
+  coverage_status?: string | null;
+};
+
+export type RuntimeSnapshot<T> = {
+  status: string;
+  generatedAt: string;
+  error?: string;
+  items: T[];
+  promotedStrategies: PromotedStrategyRecord[];
+};
+
 export function getDashboard() {
   return dashboard as {
     totals: Record<string, number>;
@@ -183,6 +238,14 @@ export function getCoverage() {
       totalReturn: number | null;
     }>;
   };
+}
+
+export function getRuntimeSignals(): RuntimeSnapshot<RuntimeSignalRecord> {
+  return runtimeSignals as RuntimeSnapshot<RuntimeSignalRecord>;
+}
+
+export function getRuntimeOps(): RuntimeSnapshot<RuntimeOpsRecord> {
+  return runtimeOps as RuntimeSnapshot<RuntimeOpsRecord>;
 }
 
 export function formatPercent(value: number | null | undefined) {

@@ -22,12 +22,19 @@ class RuntimeSourceOfTruth:
 class RuntimeModeConfig:
     paper_trading_enabled: bool = True
     live_execution_enabled: bool = False
+    strategy_selection: str = "promoted_registry"
     source_of_truth: RuntimeSourceOfTruth = field(
         default_factory=lambda: RuntimeSourceOfTruth(
             research_artifacts="results/",
             operational_state="neon",
         )
     )
+
+    def __post_init__(self) -> None:
+        if self.strategy_selection not in {"promoted_registry"}:
+            raise ValueError(
+                "runtime.strategy_selection must currently be 'promoted_registry'"
+            )
 
 
 @dataclass(slots=True)
