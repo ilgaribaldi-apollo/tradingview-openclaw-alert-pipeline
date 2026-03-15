@@ -36,7 +36,7 @@
       ]
     },
     {
-      "confidenceScore": 90.0,
+      "confidenceScore": 100,
       "failureModes": [
         "Risk-adjusted performance may collapse out of sample",
         "Live behavior may be psychologically hard to hold"
@@ -45,9 +45,9 @@
       "killCriteria": [
         "Reject if drawdown expands materially in broader matrix testing"
       ],
-      "latestRunId": "20260314T222944Z_strategy-rsi",
-      "liveReadinessScore": 45.95,
-      "overallScore": 62.38,
+      "latestRunId": "20260315T000106Z_rsi-30-70-above-ema-200",
+      "liveReadinessScore": 49.54,
+      "overallScore": 62.6,
       "pairs": [
         "BTC/USD",
         "DOGE/USD",
@@ -62,7 +62,7 @@
       ],
       "recommendedNextStep": "Expand pair/timeframe coverage and add fee/slippage stress tests.",
       "robustnessScore": 30.0,
-      "runCount": 4,
+      "runCount": 6,
       "strengths": [
         "Positive average return across recorded runs",
         "Evidence spans more than one pair"
@@ -115,6 +115,82 @@
         "Return profile is still weak or too narrow",
         "Sharpe profile needs more evidence",
         "Drawdown is too large for easy live confidence"
+      ]
+    },
+    {
+      "confidenceScore": 38.0,
+      "failureModes": [
+        "Risk-adjusted performance may collapse out of sample",
+        "Live behavior may be psychologically hard to hold"
+      ],
+      "indicatorSlug": "signal-moving-average-luxalgo",
+      "killCriteria": [
+        "Reject if drawdown expands materially in broader matrix testing",
+        "Do not promote without cross-pair confirmation"
+      ],
+      "latestRunId": "20260314T233110Z_signal-moving-average-luxalgo",
+      "liveReadinessScore": 23.65,
+      "overallScore": 23.0,
+      "pairs": [
+        "BTC/USD"
+      ],
+      "reasonCodes": [
+        "weak_return_profile",
+        "low_sharpe_confidence",
+        "drawdown_risk",
+        "single_pair_bias"
+      ],
+      "recommendedNextStep": "Do not promote yet; either improve evidence quality or move on.",
+      "robustnessScore": 23.0,
+      "runCount": 1,
+      "strengths": [],
+      "timeframes": [
+        "1h"
+      ],
+      "verdict": "reject",
+      "weaknesses": [
+        "Return profile is still weak or too narrow",
+        "Sharpe profile needs more evidence",
+        "Drawdown is too large for easy live confidence",
+        "Too concentrated in one pair so far"
+      ]
+    },
+    {
+      "confidenceScore": 38.0,
+      "failureModes": [
+        "Risk-adjusted performance may collapse out of sample",
+        "Live behavior may be psychologically hard to hold"
+      ],
+      "indicatorSlug": "macd-strategy",
+      "killCriteria": [
+        "Reject if drawdown expands materially in broader matrix testing",
+        "Do not promote without cross-pair confirmation"
+      ],
+      "latestRunId": "20260314T230651Z_macd-strategy",
+      "liveReadinessScore": 23.65,
+      "overallScore": 23.0,
+      "pairs": [
+        "BTC/USD"
+      ],
+      "reasonCodes": [
+        "weak_return_profile",
+        "low_sharpe_confidence",
+        "drawdown_risk",
+        "single_pair_bias"
+      ],
+      "recommendedNextStep": "Do not promote yet; either improve evidence quality or move on.",
+      "robustnessScore": 23.0,
+      "runCount": 1,
+      "strengths": [],
+      "timeframes": [
+        "1h"
+      ],
+      "verdict": "reject",
+      "weaknesses": [
+        "Return profile is still weak or too narrow",
+        "Sharpe profile needs more evidence",
+        "Drawdown is too large for easy live confidence",
+        "Too concentrated in one pair so far"
       ]
     }
   ]

@@ -1,0 +1,15 @@
+////////////////////////////////////////////////////////////
+// Approximated TradingView source capture for workflow continuation.
+// Target script confirmed in TradingView search results: "MACD Strategy" by HPotter.
+// The TradingView editor remained stuck on the previously opened RSI script during this session,
+// so this file preserves the canonical HPotter-style MACD state logic used for translation/testing.
+////////////////////////////////////////////////////////////
+study(title="MACD Strategy", shorttitle="MACD Strategy", overlay = true)
+fastLength = input(12)
+slowLength = input(26)
+signalLength = input(9)
+macdLine = ema(close, fastLength) - ema(close, slowLength)
+signalLine = sma(macdLine, signalLength)
+pos = iff(macdLine > signalLine, 1,
+      iff(macdLine < signalLine, -1, nz(pos[1], 0)))
+barcolor(pos == -1 ? red : pos == 1 ? green : blue)

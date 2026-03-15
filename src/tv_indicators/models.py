@@ -37,6 +37,26 @@ class AnalysisRecord:
 
 
 @dataclass(slots=True)
+class ExperimentSpec:
+    experiment_slug: str
+    title: str
+    family: str
+    variant: str
+    indicators: list[str] = field(default_factory=list)
+    kind: str = "variant"
+    status: str = "draft"
+    logic_path: str = "logic.py"
+    notes: str = ""
+    tags: list[str] = field(default_factory=list)
+    params: dict[str, Any] = field(default_factory=dict)
+    filters: list[str] = field(default_factory=list)
+    exits: list[str] = field(default_factory=list)
+    matrix: str = "default-matrix.yaml"
+    horizons: list[str] = field(default_factory=list)
+    rationale: str = ""
+
+
+@dataclass(slots=True)
 class TestMatrix:
     name: str
     symbols: list[str]

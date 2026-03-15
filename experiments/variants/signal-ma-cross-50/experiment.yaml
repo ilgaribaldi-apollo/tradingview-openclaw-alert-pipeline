@@ -1,0 +1,22 @@
+experiment_slug: signal-ma-cross-50
+title: LuxAlgo Signal MA Cross 50
+family: luxalgo-signal-ma
+variant: cross-50
+indicators:
+  - signal-moving-average-luxalgo
+kind: variant
+status: active
+logic_path: logic.py
+notes: Baseline LuxAlgo Signal MA crossover experiment.
+tags:
+  - luxalgo
+  - moving-average
+params:
+  length: 50
+filters: []
+exits:
+  - opposite_signal
+matrix: default-matrix.yaml
+horizons:
+  - full
+rationale: Direct crossover wrapper around the extracted Signal Moving Average.

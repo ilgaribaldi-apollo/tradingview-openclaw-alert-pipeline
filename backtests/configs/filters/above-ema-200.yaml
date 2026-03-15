@@ -1,0 +1,4 @@
+name: above-ema-200
+kind: above_ema
+length: 200
+description: Only allow long entries when close is above the 200 EMA.

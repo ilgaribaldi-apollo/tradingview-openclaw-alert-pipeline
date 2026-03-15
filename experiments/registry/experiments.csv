@@ -1,0 +1,6 @@
+experiment_slug,title,family,variant,kind,status,indicators,matrix,tags,notes
+rsi-baseline-30-70,RSI Baseline 30/70,rsi-thresholds,baseline-30-70,variant,active,"strategy-rsi",default-matrix.yaml,"rsi,baseline","Literal RSI threshold experiment with 30/70 levels."
+rsi-deep-20-80,RSI Deep Threshold 20/80,rsi-thresholds,deep-20-80,variant,active,"strategy-rsi",default-matrix.yaml,"rsi,threshold","Deeper RSI threshold experiment with 20/80 levels."
+signal-ma-cross-50,LuxAlgo Signal MA Cross 50,luxalgo-signal-ma,cross-50,variant,active,"signal-moving-average-luxalgo",default-matrix.yaml,"luxalgo,moving-average","Baseline LuxAlgo Signal MA crossover experiment."
+rsi-macd-confirmation-v1,RSI + MACD Confirmation V1,combo-confirmation,rsi-macd-confirmation-v1,combination,active,"strategy-rsi,macd-strategy",default-matrix.yaml,"combo,rsi,macd","Long only when RSI state turns long and MACD confirms positive crossover state."
+rsi-30-70-above-ema-200,RSI 30/70 + Above 200 EMA,rsi-thresholds,30-70-above-ema-200,variant,active,"strategy-rsi",default-matrix.yaml,"rsi,filter,trend","RSI threshold baseline with reusable 200 EMA trend filter."

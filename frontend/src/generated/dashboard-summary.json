@@ -1,8 +1,234 @@
 {
   "classificationCounts": {
-    "signal_capable": 3
+    "signal_capable": 5
   },
   "recentRuns": [
+    {
+      "actualRange": {
+        "end": "2026-01-01T00:00:00+00:00",
+        "start": "2023-01-01T00:00:00+00:00"
+      },
+      "barCount": 26297,
+      "coverageComplete": true,
+      "coverageGapDays": 0,
+      "coverageStatus": "complete",
+      "dateRange": {
+        "end": "2026-01-01",
+        "start": "2023-01-01"
+      },
+      "engine": "vectorbt",
+      "exchange": "coinbase",
+      "experimentFamily": "rsi-thresholds",
+      "experimentSlug": "rsi-30-70-above-ema-200",
+      "experimentVariant": "30-70-above-ema-200",
+      "feesBps": 10,
+      "indicatorSlug": "strategy-rsi",
+      "metrics": {
+        "actual_end": "2026-01-01T00:00:00+00:00",
+        "actual_start": "2023-01-01T00:00:00+00:00",
+        "bar_count": 26297,
+        "configured_end": "2026-01-01",
+        "configured_start": "2023-01-01",
+        "coverage_complete": true,
+        "coverage_gap_days": 0,
+        "coverage_status": "complete",
+        "engine": "vectorbt",
+        "entry_signal_count": 97,
+        "equity_final": 1.4355764592184355,
+        "exchange": "coinbase",
+        "exit_signal_count": 132,
+        "exits": [
+          "opposite-signal"
+        ],
+        "experiment_family": "rsi-thresholds",
+        "experiment_kind": "variant",
+        "experiment_slug": "rsi-30-70-above-ema-200",
+        "experiment_variant": "30-70-above-ema-200",
+        "fees_bps": 10,
+        "filters": [
+          "above-ema-200"
+        ],
+        "indicator_slug": "strategy-rsi",
+        "max_drawdown": 31.841302847807125,
+        "notes": "RSI threshold baseline with reusable 200 EMA trend filter.",
+        "position_sizing": "fixed_notional",
+        "sharpe_ratio": 0.5732646835427537,
+        "slippage_bps": 5,
+        "symbol": "BTC/USD",
+        "timeframe": "1h",
+        "total_return": 43.55764592184362,
+        "trade_count": 97,
+        "win_rate": 36.45833333333333
+      },
+      "pair": "BTC/USD",
+      "runId": "20260315T000106Z_rsi-30-70-above-ema-200",
+      "slippageBps": 5,
+      "summary": "# Experiment Summary \u2014 rsi-30-70-above-ema-200\n\n- Family: rsi-thresholds\n- Variant: 30-70-above-ema-200\n- Symbol: BTC/USD\n- Timeframe: 1h\n- Filters: ['above-ema-200']\n- Exits: ['opposite-signal']\n- Total Return [%]: 43.55764592184362\n- Max Drawdown [%]: 31.841302847807125\n- Sharpe Ratio: 0.5732646835427537\n- Win Rate [%]: 36.45833333333333\n- Trade Count: 97",
+      "timeframe": "1h"
+    },
+    {
+      "actualRange": {
+        "end": "2026-01-01T00:00:00+00:00",
+        "start": "2023-01-01T00:00:00+00:00"
+      },
+      "barCount": 26297,
+      "coverageComplete": true,
+      "coverageGapDays": 0,
+      "coverageStatus": "complete",
+      "dateRange": {
+        "end": "2026-01-01",
+        "start": "2023-01-01"
+      },
+      "engine": "vectorbt",
+      "exchange": "coinbase",
+      "experimentFamily": "rsi-thresholds",
+      "experimentSlug": "rsi-baseline-30-70",
+      "experimentVariant": "baseline-30-70",
+      "feesBps": 10,
+      "indicatorSlug": "strategy-rsi",
+      "metrics": {
+        "actual_end": "2026-01-01T00:00:00+00:00",
+        "actual_start": "2023-01-01T00:00:00+00:00",
+        "bar_count": 26297,
+        "configured_end": "2026-01-01",
+        "configured_start": "2023-01-01",
+        "coverage_complete": true,
+        "coverage_gap_days": 0,
+        "coverage_status": "complete",
+        "engine": "vectorbt",
+        "entry_signal_count": 133,
+        "equity_final": 2.2102621748898788,
+        "exchange": "coinbase",
+        "exit_signal_count": 132,
+        "experiment_family": "rsi-thresholds",
+        "experiment_kind": "variant",
+        "experiment_slug": "rsi-baseline-30-70",
+        "experiment_variant": "baseline-30-70",
+        "fees_bps": 10,
+        "indicator_slug": "strategy-rsi",
+        "max_drawdown": 35.741336840162454,
+        "notes": "Literal RSI threshold experiment with 30/70 levels.",
+        "position_sizing": "fixed_notional",
+        "sharpe_ratio": 0.943958665858073,
+        "slippage_bps": 5,
+        "symbol": "BTC/USD",
+        "timeframe": "1h",
+        "total_return": 121.02621748898785,
+        "trade_count": 133,
+        "win_rate": 39.39393939393939
+      },
+      "pair": "BTC/USD",
+      "runId": "20260314T235302Z_rsi-baseline-30-70",
+      "slippageBps": 5,
+      "summary": "# Experiment Summary \u2014 rsi-baseline-30-70\n\n- Family: rsi-thresholds\n- Variant: baseline-30-70\n- Symbol: BTC/USD\n- Timeframe: 1h\n- Total Return [%]: 121.02621748898785\n- Max Drawdown [%]: 35.741336840162454\n- Sharpe Ratio: 0.943958665858073\n- Win Rate [%]: 39.39393939393939\n- Trade Count: 133",
+      "timeframe": "1h"
+    },
+    {
+      "actualRange": {
+        "end": "2026-01-01T00:00:00+00:00",
+        "start": "2023-01-01T00:00:00+00:00"
+      },
+      "barCount": 26297,
+      "coverageComplete": true,
+      "coverageGapDays": 0,
+      "coverageStatus": "complete",
+      "dateRange": {
+        "end": "2026-01-01",
+        "start": "2023-01-01"
+      },
+      "engine": "vectorbt",
+      "exchange": "coinbase",
+      "experimentFamily": null,
+      "experimentSlug": null,
+      "experimentVariant": null,
+      "feesBps": 10,
+      "indicatorSlug": "signal-moving-average-luxalgo",
+      "metrics": {
+        "actual_end": "2026-01-01T00:00:00+00:00",
+        "actual_start": "2023-01-01T00:00:00+00:00",
+        "bar_count": 26297,
+        "configured_end": "2026-01-01",
+        "configured_start": "2023-01-01",
+        "coverage_complete": true,
+        "coverage_gap_days": 0,
+        "coverage_status": "complete",
+        "engine": "vectorbt",
+        "entry_signal_count": 658,
+        "equity_final": 0.28867365566315184,
+        "exchange": "coinbase",
+        "exit_signal_count": 659,
+        "fees_bps": 10,
+        "indicator_slug": "signal-moving-average-luxalgo",
+        "max_drawdown": 80.74418286746791,
+        "notes": "vectorbt",
+        "position_sizing": "fixed_notional",
+        "sharpe_ratio": -1.0313381011534648,
+        "slippage_bps": 5,
+        "symbol": "BTC/USD",
+        "timeframe": "1h",
+        "total_return": -71.13263443368473,
+        "trade_count": 658,
+        "win_rate": 15.34954407294833
+      },
+      "pair": "BTC/USD",
+      "runId": "20260314T233110Z_signal-moving-average-luxalgo",
+      "slippageBps": 5,
+      "summary": "# Backtest Summary \u2014 signal-moving-average-luxalgo\n\n- Exchange: coinbase\n- Symbol: BTC/USD\n- Timeframe: 1h\n- Configured Range: 2023-01-01 -> 2026-01-01\n- Actual Range: 2023-01-01T00:00:00+00:00 -> 2026-01-01T00:00:00+00:00\n- Bar Count: 26297\n- Coverage Status: complete\n- Coverage Complete: True\n- Coverage Gap [days]: 0\n- Fees [bps]: 10\n- Slippage [bps]: 5\n- Entry Signal Count: 658\n- Exit Signal Count: 659\n- Total Return [%]: -71.13263443368473\n- Max Drawdown [%]: 80.74418286746791\n- Sharpe Ratio: -1.0313381011534648\n- Win Rate [%]: 15.34954407294833\n- Trade Count: 658\n- Engine: vectorbt\n- Notes: vectorbt",
+      "timeframe": "1h"
+    },
+    {
+      "actualRange": {
+        "end": "2026-01-01T00:00:00+00:00",
+        "start": "2023-01-01T00:00:00+00:00"
+      },
+      "barCount": 26297,
+      "coverageComplete": true,
+      "coverageGapDays": 0,
+      "coverageStatus": "complete",
+      "dateRange": {
+        "end": "2026-01-01",
+        "start": "2023-01-01"
+      },
+      "engine": "vectorbt",
+      "exchange": "coinbase",
+      "experimentFamily": null,
+      "experimentSlug": null,
+      "experimentVariant": null,
+      "feesBps": 10,
+      "indicatorSlug": "macd-strategy",
+      "metrics": {
+        "actual_end": "2026-01-01T00:00:00+00:00",
+        "actual_start": "2023-01-01T00:00:00+00:00",
+        "bar_count": 26297,
+        "configured_end": "2026-01-01",
+        "configured_start": "2023-01-01",
+        "coverage_complete": true,
+        "coverage_gap_days": 0,
+        "coverage_status": "complete",
+        "engine": "vectorbt",
+        "entry_signal_count": 1066,
+        "equity_final": 0.14175374274538866,
+        "exchange": "coinbase",
+        "exit_signal_count": 1066,
+        "fees_bps": 10,
+        "indicator_slug": "macd-strategy",
+        "max_drawdown": 87.88761561549093,
+        "notes": "vectorbt",
+        "position_sizing": "fixed_notional",
+        "sharpe_ratio": -1.7421412774453913,
+        "slippage_bps": 5,
+        "symbol": "BTC/USD",
+        "timeframe": "1h",
+        "total_return": -85.82462572546105,
+        "trade_count": 1066,
+        "win_rate": 31.425891181988742
+      },
+      "pair": "BTC/USD",
+      "runId": "20260314T230651Z_macd-strategy",
+      "slippageBps": 5,
+      "summary": "# Backtest Summary \u2014 macd-strategy\n\n- Exchange: coinbase\n- Symbol: BTC/USD\n- Timeframe: 1h\n- Configured Range: 2023-01-01 -> 2026-01-01\n- Actual Range: 2023-01-01T00:00:00+00:00 -> 2026-01-01T00:00:00+00:00\n- Bar Count: 26297\n- Coverage Status: complete\n- Coverage Complete: True\n- Coverage Gap [days]: 0\n- Fees [bps]: 10\n- Slippage [bps]: 5\n- Entry Signal Count: 1066\n- Exit Signal Count: 1066\n- Total Return [%]: -85.82462572546105\n- Max Drawdown [%]: 87.88761561549093\n- Sharpe Ratio: -1.7421412774453913\n- Win Rate [%]: 31.425891181988742\n- Trade Count: 1066\n- Engine: vectorbt\n- Notes: vectorbt",
+      "timeframe": "1h"
+    },
     {
       "actualRange": {
         "end": "2026-01-01T00:00:00+00:00",
@@ -18,6 +244,9 @@
       },
       "engine": "vectorbt",
       "exchange": "coinbase",
+      "experimentFamily": null,
+      "experimentSlug": null,
+      "experimentVariant": null,
       "feesBps": 10,
       "indicatorSlug": "ema-ma-crossover",
       "metrics": {
@@ -52,212 +281,12 @@
       "slippageBps": 5,
       "summary": "# Backtest Summary \u2014 ema-ma-crossover\n\n- Exchange: coinbase\n- Symbol: DOGE/USD\n- Timeframe: 1h\n- Configured Range: 2023-01-01 -> 2026-01-01\n- Actual Range: 2023-01-01T00:00:00+00:00 -> 2026-01-01T00:00:00+00:00\n- Bar Count: 26295\n- Coverage Status: complete\n- Coverage Complete: True\n- Coverage Gap [days]: 0\n- Fees [bps]: 10\n- Slippage [bps]: 5\n- Entry Signal Count: 720\n- Exit Signal Count: 720\n- Total Return [%]: -60.49612015134834\n- Max Drawdown [%]: 78.49531554205547\n- Sharpe Ratio: -0.1430627432617457\n- Win Rate [%]: 29.166666666666668\n- Trade Count: 720\n- Engine: vectorbt\n- Notes: vectorbt",
       "timeframe": "1h"
-    },
-    {
-      "actualRange": {
-        "end": "2026-01-01T00:00:00+00:00",
-        "start": "2023-01-01T00:00:00+00:00"
-      },
-      "barCount": 26295,
-      "coverageComplete": true,
-      "coverageGapDays": 0,
-      "coverageStatus": "complete",
-      "dateRange": {
-        "end": "2026-01-01",
-        "start": "2023-01-01"
-      },
-      "engine": "vectorbt",
-      "exchange": "coinbase",
-      "feesBps": 10,
-      "indicatorSlug": "ema-ma-crossover",
-      "metrics": {
-        "actual_end": "2026-01-01T00:00:00+00:00",
-        "actual_start": "2023-01-01T00:00:00+00:00",
-        "bar_count": 26295,
-        "configured_end": "2026-01-01",
-        "configured_start": "2023-01-01",
-        "coverage_complete": true,
-        "coverage_gap_days": 0,
-        "coverage_status": "complete",
-        "engine": "vectorbt",
-        "entry_signal_count": 712,
-        "equity_final": 1.239905762465916,
-        "exchange": "coinbase",
-        "exit_signal_count": 712,
-        "fees_bps": 10,
-        "indicator_slug": "ema-ma-crossover",
-        "max_drawdown": 76.58776115007421,
-        "notes": "vectorbt",
-        "position_sizing": "fixed_notional",
-        "sharpe_ratio": 0.4391726265387122,
-        "slippage_bps": 5,
-        "symbol": "SOL/USD",
-        "timeframe": "1h",
-        "total_return": 23.99057624659189,
-        "trade_count": 712,
-        "win_rate": 31.03932584269663
-      },
-      "pair": "SOL/USD",
-      "runId": "20260314T222956Z_ema-ma-crossover",
-      "slippageBps": 5,
-      "summary": "# Backtest Summary \u2014 ema-ma-crossover\n\n- Exchange: coinbase\n- Symbol: SOL/USD\n- Timeframe: 1h\n- Configured Range: 2023-01-01 -> 2026-01-01\n- Actual Range: 2023-01-01T00:00:00+00:00 -> 2026-01-01T00:00:00+00:00\n- Bar Count: 26295\n- Coverage Status: complete\n- Coverage Complete: True\n- Coverage Gap [days]: 0\n- Fees [bps]: 10\n- Slippage [bps]: 5\n- Entry Signal Count: 712\n- Exit Signal Count: 712\n- Total Return [%]: 23.99057624659189\n- Max Drawdown [%]: 76.58776115007421\n- Sharpe Ratio: 0.4391726265387122\n- Win Rate [%]: 31.03932584269663\n- Trade Count: 712\n- Engine: vectorbt\n- Notes: vectorbt",
-      "timeframe": "1h"
-    },
-    {
-      "actualRange": {
-        "end": "2026-01-01T00:00:00+00:00",
-        "start": "2023-01-01T00:00:00+00:00"
-      },
-      "barCount": 26297,
-      "coverageComplete": true,
-      "coverageGapDays": 0,
-      "coverageStatus": "complete",
-      "dateRange": {
-        "end": "2026-01-01",
-        "start": "2023-01-01"
-      },
-      "engine": "vectorbt",
-      "exchange": "coinbase",
-      "feesBps": 10,
-      "indicatorSlug": "ema-ma-crossover",
-      "metrics": {
-        "actual_end": "2026-01-01T00:00:00+00:00",
-        "actual_start": "2023-01-01T00:00:00+00:00",
-        "bar_count": 26297,
-        "configured_end": "2026-01-01",
-        "configured_start": "2023-01-01",
-        "coverage_complete": true,
-        "coverage_gap_days": 0,
-        "coverage_status": "complete",
-        "engine": "vectorbt",
-        "entry_signal_count": 759,
-        "equity_final": 0.2702162805003372,
-        "exchange": "coinbase",
-        "exit_signal_count": 759,
-        "fees_bps": 10,
-        "indicator_slug": "ema-ma-crossover",
-        "max_drawdown": 80.01644708784829,
-        "notes": "vectorbt",
-        "position_sizing": "fixed_notional",
-        "sharpe_ratio": -0.778335028719372,
-        "slippage_bps": 5,
-        "symbol": "ETH/USD",
-        "timeframe": "1h",
-        "total_return": -72.97837194996629,
-        "trade_count": 759,
-        "win_rate": 27.27272727272727
-      },
-      "pair": "ETH/USD",
-      "runId": "20260314T222952Z_ema-ma-crossover",
-      "slippageBps": 5,
-      "summary": "# Backtest Summary \u2014 ema-ma-crossover\n\n- Exchange: coinbase\n- Symbol: ETH/USD\n- Timeframe: 1h\n- Configured Range: 2023-01-01 -> 2026-01-01\n- Actual Range: 2023-01-01T00:00:00+00:00 -> 2026-01-01T00:00:00+00:00\n- Bar Count: 26297\n- Coverage Status: complete\n- Coverage Complete: True\n- Coverage Gap [days]: 0\n- Fees [bps]: 10\n- Slippage [bps]: 5\n- Entry Signal Count: 759\n- Exit Signal Count: 759\n- Total Return [%]: -72.97837194996629\n- Max Drawdown [%]: 80.01644708784829\n- Sharpe Ratio: -0.778335028719372\n- Win Rate [%]: 27.27272727272727\n- Trade Count: 759\n- Engine: vectorbt\n- Notes: vectorbt",
-      "timeframe": "1h"
-    },
-    {
-      "actualRange": {
-        "end": "2026-01-01T00:00:00+00:00",
-        "start": "2023-01-01T00:00:00+00:00"
-      },
-      "barCount": 26297,
-      "coverageComplete": true,
-      "coverageGapDays": 0,
-      "coverageStatus": "complete",
-      "dateRange": {
-        "end": "2026-01-01",
-        "start": "2023-01-01"
-      },
-      "engine": "vectorbt",
-      "exchange": "coinbase",
-      "feesBps": 10,
-      "indicatorSlug": "ema-ma-crossover",
-      "metrics": {
-        "actual_end": "2026-01-01T00:00:00+00:00",
-        "actual_start": "2023-01-01T00:00:00+00:00",
-        "bar_count": 26297,
-        "configured_end": "2026-01-01",
-        "configured_start": "2023-01-01",
-        "coverage_complete": true,
-        "coverage_gap_days": 0,
-        "coverage_status": "complete",
-        "engine": "vectorbt",
-        "entry_signal_count": 770,
-        "equity_final": 0.3186927356607102,
-        "exchange": "coinbase",
-        "exit_signal_count": 770,
-        "fees_bps": 10,
-        "indicator_slug": "ema-ma-crossover",
-        "max_drawdown": 77.307960879063,
-        "notes": "vectorbt",
-        "position_sizing": "fixed_notional",
-        "sharpe_ratio": -0.9400541890539645,
-        "slippage_bps": 5,
-        "symbol": "BTC/USD",
-        "timeframe": "1h",
-        "total_return": -68.13072643392893,
-        "trade_count": 770,
-        "win_rate": 26.623376623376622
-      },
-      "pair": "BTC/USD",
-      "runId": "20260314T222948Z_ema-ma-crossover",
-      "slippageBps": 5,
-      "summary": "# Backtest Summary \u2014 ema-ma-crossover\n\n- Exchange: coinbase\n- Symbol: BTC/USD\n- Timeframe: 1h\n- Configured Range: 2023-01-01 -> 2026-01-01\n- Actual Range: 2023-01-01T00:00:00+00:00 -> 2026-01-01T00:00:00+00:00\n- Bar Count: 26297\n- Coverage Status: complete\n- Coverage Complete: True\n- Coverage Gap [days]: 0\n- Fees [bps]: 10\n- Slippage [bps]: 5\n- Entry Signal Count: 770\n- Exit Signal Count: 770\n- Total Return [%]: -68.13072643392893\n- Max Drawdown [%]: 77.307960879063\n- Sharpe Ratio: -0.9400541890539645\n- Win Rate [%]: 26.623376623376622\n- Trade Count: 770\n- Engine: vectorbt\n- Notes: vectorbt",
-      "timeframe": "1h"
-    },
-    {
-      "actualRange": {
-        "end": "2026-01-01T00:00:00+00:00",
-        "start": "2023-01-01T00:00:00+00:00"
-      },
-      "barCount": 26295,
-      "coverageComplete": true,
-      "coverageGapDays": 0,
-      "coverageStatus": "complete",
-      "dateRange": {
-        "end": "2026-01-01",
-        "start": "2023-01-01"
-      },
-      "engine": "vectorbt",
-      "exchange": "coinbase",
-      "feesBps": 10,
-      "indicatorSlug": "strategy-rsi",
-      "metrics": {
-        "actual_end": "2026-01-01T00:00:00+00:00",
-        "actual_start": "2023-01-01T00:00:00+00:00",
-        "bar_count": 26295,
-        "configured_end": "2026-01-01",
-        "configured_start": "2023-01-01",
-        "coverage_complete": true,
-        "coverage_gap_days": 0,
-        "coverage_status": "complete",
-        "engine": "vectorbt",
-        "entry_signal_count": 132,
-        "equity_final": 0.5903315914416697,
-        "exchange": "coinbase",
-        "exit_signal_count": 132,
-        "fees_bps": 10,
-        "indicator_slug": "strategy-rsi",
-        "max_drawdown": 72.265054840596,
-        "notes": "vectorbt",
-        "position_sizing": "fixed_notional",
-        "sharpe_ratio": 0.07744716463006888,
-        "slippage_bps": 5,
-        "symbol": "DOGE/USD",
-        "timeframe": "1h",
-        "total_return": -40.96684085583302,
-        "trade_count": 132,
-        "win_rate": 31.818181818181817
-      },
-      "pair": "DOGE/USD",
-      "runId": "20260314T222944Z_strategy-rsi",
-      "slippageBps": 5,
-      "summary": "# Backtest Summary \u2014 strategy-rsi\n\n- Exchange: coinbase\n- Symbol: DOGE/USD\n- Timeframe: 1h\n- Configured Range: 2023-01-01 -> 2026-01-01\n- Actual Range: 2023-01-01T00:00:00+00:00 -> 2026-01-01T00:00:00+00:00\n- Bar Count: 26295\n- Coverage Status: complete\n- Coverage Complete: True\n- Coverage Gap [days]: 0\n- Fees [bps]: 10\n- Slippage [bps]: 5\n- Entry Signal Count: 132\n- Exit Signal Count: 132\n- Total Return [%]: -40.96684085583302\n- Max Drawdown [%]: 72.265054840596\n- Sharpe Ratio: 0.07744716463006888\n- Win Rate [%]: 31.818181818181817\n- Trade Count: 132\n- Engine: vectorbt\n- Notes: vectorbt",
-      "timeframe": "1h"
     }
   ],
   "statusCounts": {
     "analyzed": 1,
     "benchmarked": 1,
-    "strategy_ready": 1
+    "strategy_ready": 3
   },
   "topCandidates": [
     {
@@ -296,7 +325,7 @@
       ]
     },
     {
-      "confidenceScore": 90.0,
+      "confidenceScore": 100,
       "failureModes": [
         "Risk-adjusted performance may collapse out of sample",
         "Live behavior may be psychologically hard to hold"
@@ -305,9 +334,9 @@
       "killCriteria": [
         "Reject if drawdown expands materially in broader matrix testing"
       ],
-      "latestRunId": "20260314T222944Z_strategy-rsi",
-      "liveReadinessScore": 45.95,
-      "overallScore": 62.38,
+      "latestRunId": "20260315T000106Z_rsi-30-70-above-ema-200",
+      "liveReadinessScore": 49.54,
+      "overallScore": 62.6,
       "pairs": [
         "BTC/USD",
         "DOGE/USD",
@@ -322,7 +351,7 @@
       ],
       "recommendedNextStep": "Expand pair/timeframe coverage and add fee/slippage stress tests.",
       "robustnessScore": 30.0,
-      "runCount": 4,
+      "runCount": 6,
       "strengths": [
         "Positive average return across recorded runs",
         "Evidence spans more than one pair"
@@ -376,6 +405,44 @@
         "Sharpe profile needs more evidence",
         "Drawdown is too large for easy live confidence"
       ]
+    },
+    {
+      "confidenceScore": 38.0,
+      "failureModes": [
+        "Risk-adjusted performance may collapse out of sample",
+        "Live behavior may be psychologically hard to hold"
+      ],
+      "indicatorSlug": "signal-moving-average-luxalgo",
+      "killCriteria": [
+        "Reject if drawdown expands materially in broader matrix testing",
+        "Do not promote without cross-pair confirmation"
+      ],
+      "latestRunId": "20260314T233110Z_signal-moving-average-luxalgo",
+      "liveReadinessScore": 23.65,
+      "overallScore": 23.0,
+      "pairs": [
+        "BTC/USD"
+      ],
+      "reasonCodes": [
+        "weak_return_profile",
+        "low_sharpe_confidence",
+        "drawdown_risk",
+        "single_pair_bias"
+      ],
+      "recommendedNextStep": "Do not promote yet; either improve evidence quality or move on.",
+      "robustnessScore": 23.0,
+      "runCount": 1,
+      "strengths": [],
+      "timeframes": [
+        "1h"
+      ],
+      "verdict": "reject",
+      "weaknesses": [
+        "Return profile is still weak or too narrow",
+        "Sharpe profile needs more evidence",
+        "Drawdown is too large for easy live confidence",
+        "Too concentrated in one pair so far"
+      ]
     }
   ],
   "topRanked": [
@@ -392,6 +459,10 @@
       "entrySignalCount": 125,
       "exchange": "coinbase",
       "exitSignalCount": 124,
+      "experimentFamily": "",
+      "experimentKind": "",
+      "experimentSlug": "",
+      "experimentVariant": "",
       "feesBps": 10.0,
       "indicatorSlug": "strategy-rsi",
       "maxDrawdown": 59.40784898329049,
@@ -418,6 +489,10 @@
       "entrySignalCount": 133,
       "exchange": "coinbase",
       "exitSignalCount": 132,
+      "experimentFamily": "",
+      "experimentKind": "",
+      "experimentSlug": "",
+      "experimentVariant": "",
       "feesBps": 10.0,
       "indicatorSlug": "strategy-rsi",
       "maxDrawdown": 35.741336840162454,
@@ -434,6 +509,66 @@
     {
       "actualEnd": "2026-01-01T00:00:00+00:00",
       "actualStart": "2023-01-01T00:00:00+00:00",
+      "barCount": 26297,
+      "configuredEnd": "2026-01-01",
+      "configuredStart": "2023-01-01",
+      "coverageComplete": true,
+      "coverageGapDays": 0,
+      "coverageStatus": "complete",
+      "engine": "vectorbt",
+      "entrySignalCount": 133,
+      "exchange": "coinbase",
+      "exitSignalCount": 132,
+      "experimentFamily": "rsi-thresholds",
+      "experimentKind": "variant",
+      "experimentSlug": "rsi-baseline-30-70",
+      "experimentVariant": "baseline-30-70",
+      "feesBps": 10.0,
+      "indicatorSlug": "strategy-rsi",
+      "maxDrawdown": 35.741336840162454,
+      "notes": "Literal RSI threshold experiment with 30/70 levels.",
+      "pair": "BTC/USD",
+      "runId": "20260314T235302Z_rsi-baseline-30-70",
+      "sharpeRatio": 0.943958665858073,
+      "slippageBps": 5.0,
+      "timeframe": "1h",
+      "totalReturn": 121.02621748898785,
+      "tradeCount": 133,
+      "winRate": 39.39393939393939
+    },
+    {
+      "actualEnd": "2026-01-01T00:00:00+00:00",
+      "actualStart": "2023-01-01T00:00:00+00:00",
+      "barCount": 26297,
+      "configuredEnd": "2026-01-01",
+      "configuredStart": "2023-01-01",
+      "coverageComplete": true,
+      "coverageGapDays": 0,
+      "coverageStatus": "complete",
+      "engine": "vectorbt",
+      "entrySignalCount": 97,
+      "exchange": "coinbase",
+      "exitSignalCount": 132,
+      "experimentFamily": "rsi-thresholds",
+      "experimentKind": "variant",
+      "experimentSlug": "rsi-30-70-above-ema-200",
+      "experimentVariant": "30-70-above-ema-200",
+      "feesBps": 10.0,
+      "indicatorSlug": "strategy-rsi",
+      "maxDrawdown": 31.841302847807125,
+      "notes": "RSI threshold baseline with reusable 200 EMA trend filter.",
+      "pair": "BTC/USD",
+      "runId": "20260315T000106Z_rsi-30-70-above-ema-200",
+      "sharpeRatio": 0.5732646835427537,
+      "slippageBps": 5.0,
+      "timeframe": "1h",
+      "totalReturn": 43.55764592184362,
+      "tradeCount": 97,
+      "winRate": 36.45833333333333
+    },
+    {
+      "actualEnd": "2026-01-01T00:00:00+00:00",
+      "actualStart": "2023-01-01T00:00:00+00:00",
       "barCount": 26295,
       "configuredEnd": "2026-01-01",
       "configuredStart": "2023-01-01",
@@ -444,6 +579,10 @@
       "entrySignalCount": 712,
       "exchange": "coinbase",
       "exitSignalCount": 712,
+      "experimentFamily": "",
+      "experimentKind": "",
+      "experimentSlug": "",
+      "experimentVariant": "",
       "feesBps": 10.0,
       "indicatorSlug": "ema-ma-crossover",
       "maxDrawdown": 76.58776115007421,
@@ -456,68 +595,16 @@
       "totalReturn": 23.99057624659189,
       "tradeCount": 712,
       "winRate": 31.03932584269663
-    },
-    {
-      "actualEnd": "2026-01-01T00:00:00+00:00",
-      "actualStart": "2023-01-01T00:00:00+00:00",
-      "barCount": 26297,
-      "configuredEnd": "2026-01-01",
-      "configuredStart": "2023-01-01",
-      "coverageComplete": true,
-      "coverageGapDays": 0,
-      "coverageStatus": "complete",
-      "engine": "vectorbt",
-      "entrySignalCount": 137,
-      "exchange": "coinbase",
-      "exitSignalCount": 136,
-      "feesBps": 10.0,
-      "indicatorSlug": "strategy-rsi",
-      "maxDrawdown": 56.158422398451634,
-      "notes": "vectorbt",
-      "pair": "ETH/USD",
-      "runId": "20260314T222843Z_strategy-rsi",
-      "sharpeRatio": 0.2913515046433064,
-      "slippageBps": 5.0,
-      "timeframe": "1h",
-      "totalReturn": 11.294528074871446,
-      "tradeCount": 137,
-      "winRate": 32.35294117647059
-    },
-    {
-      "actualEnd": "",
-      "actualStart": "",
-      "barCount": null,
-      "configuredEnd": "",
-      "configuredStart": "",
-      "coverageComplete": null,
-      "coverageGapDays": null,
-      "coverageStatus": "",
-      "engine": "vectorbt",
-      "entrySignalCount": null,
-      "exchange": "coinbase",
-      "exitSignalCount": null,
-      "feesBps": null,
-      "indicatorSlug": "machine-learning-pivot-points-knn-ss",
-      "maxDrawdown": 2.325079717150379,
-      "notes": "vectorbt",
-      "pair": "BTC/USD",
-      "runId": "20260314T211459Z_machine-learning-pivot-points-knn-ss",
-      "sharpeRatio": 5.377352616087074,
-      "slippageBps": null,
-      "timeframe": "1h",
-      "totalReturn": 5.2017612345131585,
-      "tradeCount": 3,
-      "winRate": 50.0
     }
   ],
   "totals": {
     "failedRuns": 0,
-    "indicators": 3,
-    "ranked": 9,
-    "runs": 9
+    "indicators": 5,
+    "ranked": 13,
+    "runs": 13
   },
   "verdictCounts": {
     "keep_researching": 2,
-    "reject": 1
+    "reject": 3
   }
 }

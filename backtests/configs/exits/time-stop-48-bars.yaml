@@ -1,0 +1,4 @@
+name: time-stop-48-bars
+kind: time_stop_bars
+bars: 48
+description: Placeholder config for future stateful time-stop exits after 48 bars.

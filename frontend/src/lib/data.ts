@@ -3,6 +3,7 @@ import coverage from "@/generated/coverage-matrix.json";
 import dashboard from "@/generated/dashboard-summary.json";
 import diagnostics from "@/generated/diagnostics-index.json";
 import indicators from "@/generated/indicators-index.json";
+import experiments from "@/generated/experiments-index.json";
 import liveReadiness from "@/generated/live-readiness-index.json";
 import rankings from "@/generated/rankings-index.json";
 import runtimeOps from "@/generated/runtime-ops.json";
@@ -55,9 +56,33 @@ export type IndicatorRecord = {
   assessment?: CandidateAssessment;
 };
 
+export type ExperimentRecord = {
+  experimentSlug: string;
+  title: string;
+  family: string;
+  variant: string;
+  kind: string;
+  status: string;
+  indicators: string[];
+  tags: string[];
+  params: Record<string, unknown>;
+  filters: string[];
+  exits: string[];
+  matrix: string;
+  horizons: string[];
+  notes: string;
+  rationale: string;
+  runCount: number;
+  latestRunId?: string | null;
+  latestMetrics?: Record<string, string | number | boolean | null> | null;
+};
+
 export type RunRecord = {
   runId: string;
   indicatorSlug: string;
+  experimentSlug?: string | null;
+  experimentFamily?: string | null;
+  experimentVariant?: string | null;
   exchange: string;
   pair: string;
   timeframe: string;
@@ -76,6 +101,10 @@ export type RunRecord = {
 
 export type RankingRecord = {
   indicatorSlug: string;
+  experimentSlug?: string;
+  experimentFamily?: string;
+  experimentVariant?: string;
+  experimentKind?: string;
   runId: string;
   exchange?: string;
   pair?: string;
@@ -170,6 +199,14 @@ export function getIndicators(): IndicatorRecord[] {
   return indicators.items as IndicatorRecord[];
 }
 
+export function getExperiments(): ExperimentRecord[] {
+  return experiments.items as ExperimentRecord[];
+}
+
+export function getExperiment(slug: string): ExperimentRecord | undefined {
+  return getExperiments().find((experiment) => experiment.experimentSlug === slug);
+}
+
 export function getIndicator(slug: string): IndicatorRecord | undefined {
   return getIndicators().find((indicator) => indicator.slug === slug);
 }
@@ -180,6 +217,10 @@ export function getRuns(): RunRecord[] {
 
 export function getRun(runId: string): RunRecord | undefined {
   return getRuns().find((run) => run.runId === runId);
+}
+
+export function getExperimentRuns(slug: string): RunRecord[] {
+  return getRuns().filter((run) => run.experimentSlug === slug);
 }
 
 export function getIndicatorRuns(slug: string): RunRecord[] {

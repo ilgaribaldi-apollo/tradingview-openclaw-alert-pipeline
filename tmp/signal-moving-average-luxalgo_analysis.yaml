@@ -1,0 +1,20 @@
+slug: "signal-moving-average-luxalgo"
+summary: "Adaptive signal moving average by LuxAlgo using SMA target, correlation-squared weighting, and a persistent directional state to update the synthetic MA."
+signal_model: "state_based"
+inputs:
+  length: 50
+features:
+  - sma_target
+  - rolling_correlation
+  - r2_weighting
+  - persistent_direction_state
+  - adaptive_signal_ma
+unsupported:
+  - plot styling
+  - fill styling
+entry_logic: "Enter long when source closes above the adaptive Signal MA after being at or below it on the prior bar."
+exit_logic: "Exit long when source closes below the adaptive Signal MA after being at or above it on the prior bar."
+caution_flags:
+  - custom_recursive_ma
+  - translation_requires_iterative_state_update
+translation_notes: "Python translation preserves the recursive `ma` and `os` update logic from the Pine source, then uses close-vs-signal-MA crossovers as an explicit backtestable wrapper."

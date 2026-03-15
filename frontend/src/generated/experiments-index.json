@@ -1,0 +1,243 @@
+{
+  "items": [
+    {
+      "exits": [
+        "opposite-signal"
+      ],
+      "experimentSlug": "rsi-30-70-above-ema-200",
+      "family": "rsi-thresholds",
+      "filters": [
+        "above-ema-200"
+      ],
+      "horizons": [
+        "full"
+      ],
+      "indicators": [
+        "strategy-rsi"
+      ],
+      "kind": "variant",
+      "latestMetrics": {
+        "actual_end": "2026-01-01T00:00:00+00:00",
+        "actual_start": "2023-01-01T00:00:00+00:00",
+        "bar_count": 26297,
+        "configured_end": "2026-01-01",
+        "configured_start": "2023-01-01",
+        "coverage_complete": true,
+        "coverage_gap_days": 0,
+        "coverage_status": "complete",
+        "engine": "vectorbt",
+        "entry_signal_count": 97,
+        "equity_final": 1.4355764592184355,
+        "exchange": "coinbase",
+        "exit_signal_count": 132,
+        "exits": [
+          "opposite-signal"
+        ],
+        "experiment_family": "rsi-thresholds",
+        "experiment_kind": "variant",
+        "experiment_slug": "rsi-30-70-above-ema-200",
+        "experiment_variant": "30-70-above-ema-200",
+        "fees_bps": 10,
+        "filters": [
+          "above-ema-200"
+        ],
+        "indicator_slug": "strategy-rsi",
+        "max_drawdown": 31.841302847807125,
+        "notes": "RSI threshold baseline with reusable 200 EMA trend filter.",
+        "position_sizing": "fixed_notional",
+        "sharpe_ratio": 0.5732646835427537,
+        "slippage_bps": 5,
+        "symbol": "BTC/USD",
+        "timeframe": "1h",
+        "total_return": 43.55764592184362,
+        "trade_count": 97,
+        "win_rate": 36.45833333333333
+      },
+      "latestRunId": "20260315T000106Z_rsi-30-70-above-ema-200",
+      "matrix": "default-matrix.yaml",
+      "notes": "RSI threshold baseline with reusable 200 EMA trend filter.",
+      "params": {
+        "length": 12,
+        "overbought": 70,
+        "oversold": 30
+      },
+      "rationale": "Tests whether a simple trend filter improves baseline RSI behavior.",
+      "runCount": 1,
+      "status": "active",
+      "tags": [
+        "rsi",
+        "filter",
+        "trend"
+      ],
+      "title": "RSI 30/70 + Above 200 EMA",
+      "variant": "30-70-above-ema-200"
+    },
+    {
+      "exits": [
+        "opposite_signal"
+      ],
+      "experimentSlug": "rsi-baseline-30-70",
+      "family": "rsi-thresholds",
+      "filters": [],
+      "horizons": [
+        "full"
+      ],
+      "indicators": [
+        "strategy-rsi"
+      ],
+      "kind": "variant",
+      "latestMetrics": {
+        "actual_end": "2026-01-01T00:00:00+00:00",
+        "actual_start": "2023-01-01T00:00:00+00:00",
+        "bar_count": 26297,
+        "configured_end": "2026-01-01",
+        "configured_start": "2023-01-01",
+        "coverage_complete": true,
+        "coverage_gap_days": 0,
+        "coverage_status": "complete",
+        "engine": "vectorbt",
+        "entry_signal_count": 133,
+        "equity_final": 2.2102621748898788,
+        "exchange": "coinbase",
+        "exit_signal_count": 132,
+        "experiment_family": "rsi-thresholds",
+        "experiment_kind": "variant",
+        "experiment_slug": "rsi-baseline-30-70",
+        "experiment_variant": "baseline-30-70",
+        "fees_bps": 10,
+        "indicator_slug": "strategy-rsi",
+        "max_drawdown": 35.741336840162454,
+        "notes": "Literal RSI threshold experiment with 30/70 levels.",
+        "position_sizing": "fixed_notional",
+        "sharpe_ratio": 0.943958665858073,
+        "slippage_bps": 5,
+        "symbol": "BTC/USD",
+        "timeframe": "1h",
+        "total_return": 121.02621748898785,
+        "trade_count": 133,
+        "win_rate": 39.39393939393939
+      },
+      "latestRunId": "20260314T235302Z_rsi-baseline-30-70",
+      "matrix": "default-matrix.yaml",
+      "notes": "Literal RSI threshold experiment with 30/70 levels.",
+      "params": {
+        "length": 12,
+        "overbought": 70,
+        "oversold": 30
+      },
+      "rationale": "Baseline RSI threshold variant.",
+      "runCount": 1,
+      "status": "active",
+      "tags": [
+        "rsi",
+        "baseline"
+      ],
+      "title": "RSI Baseline 30/70",
+      "variant": "baseline-30-70"
+    },
+    {
+      "exits": [
+        "opposite_signal"
+      ],
+      "experimentSlug": "rsi-deep-20-80",
+      "family": "rsi-thresholds",
+      "filters": [],
+      "horizons": [
+        "full"
+      ],
+      "indicators": [
+        "strategy-rsi"
+      ],
+      "kind": "variant",
+      "latestMetrics": null,
+      "latestRunId": null,
+      "matrix": "default-matrix.yaml",
+      "notes": "Deeper RSI threshold experiment with 20/80 levels.",
+      "params": {
+        "length": 12,
+        "overbought": 80,
+        "oversold": 20
+      },
+      "rationale": "Tests whether stricter RSI extremes improve selectivity.",
+      "runCount": 0,
+      "status": "active",
+      "tags": [
+        "rsi",
+        "threshold"
+      ],
+      "title": "RSI Deep Threshold 20/80",
+      "variant": "deep-20-80"
+    },
+    {
+      "exits": [
+        "opposite_signal"
+      ],
+      "experimentSlug": "rsi-macd-confirmation-v1",
+      "family": "combo-confirmation",
+      "filters": [
+        "confirmation"
+      ],
+      "horizons": [
+        "full"
+      ],
+      "indicators": [
+        "strategy-rsi",
+        "macd-strategy"
+      ],
+      "kind": "combination",
+      "latestMetrics": null,
+      "latestRunId": null,
+      "matrix": "default-matrix.yaml",
+      "notes": "Long only when RSI state turns long and MACD confirms positive crossover state.",
+      "params": {
+        "macd_fast": 12,
+        "macd_signal": 9,
+        "macd_slow": 26,
+        "overbought": 70,
+        "oversold": 30,
+        "rsi_length": 12
+      },
+      "rationale": "Simple confirmation combo to reduce weak standalone RSI entries.",
+      "runCount": 0,
+      "status": "active",
+      "tags": [
+        "combo",
+        "rsi",
+        "macd"
+      ],
+      "title": "RSI + MACD Confirmation V1",
+      "variant": "rsi-macd-confirmation-v1"
+    },
+    {
+      "exits": [
+        "opposite_signal"
+      ],
+      "experimentSlug": "signal-ma-cross-50",
+      "family": "luxalgo-signal-ma",
+      "filters": [],
+      "horizons": [
+        "full"
+      ],
+      "indicators": [
+        "signal-moving-average-luxalgo"
+      ],
+      "kind": "variant",
+      "latestMetrics": null,
+      "latestRunId": null,
+      "matrix": "default-matrix.yaml",
+      "notes": "Baseline LuxAlgo Signal MA crossover experiment.",
+      "params": {
+        "length": 50
+      },
+      "rationale": "Direct crossover wrapper around the extracted Signal Moving Average.",
+      "runCount": 0,
+      "status": "active",
+      "tags": [
+        "luxalgo",
+        "moving-average"
+      ],
+      "title": "LuxAlgo Signal MA Cross 50",
+      "variant": "cross-50"
+    }
+  ]
+}

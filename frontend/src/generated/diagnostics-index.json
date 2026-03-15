@@ -59,6 +59,54 @@
         "Sharpe profile needs more evidence",
         "Drawdown is too large for easy live confidence"
       ]
+    },
+    {
+      "failureModes": [
+        "Risk-adjusted performance may collapse out of sample",
+        "Live behavior may be psychologically hard to hold"
+      ],
+      "indicatorSlug": "signal-moving-average-luxalgo",
+      "killCriteria": [
+        "Reject if drawdown expands materially in broader matrix testing",
+        "Do not promote without cross-pair confirmation"
+      ],
+      "reasonCodes": [
+        "weak_return_profile",
+        "low_sharpe_confidence",
+        "drawdown_risk",
+        "single_pair_bias"
+      ],
+      "verdict": "reject",
+      "weaknesses": [
+        "Return profile is still weak or too narrow",
+        "Sharpe profile needs more evidence",
+        "Drawdown is too large for easy live confidence",
+        "Too concentrated in one pair so far"
+      ]
+    },
+    {
+      "failureModes": [
+        "Risk-adjusted performance may collapse out of sample",
+        "Live behavior may be psychologically hard to hold"
+      ],
+      "indicatorSlug": "macd-strategy",
+      "killCriteria": [
+        "Reject if drawdown expands materially in broader matrix testing",
+        "Do not promote without cross-pair confirmation"
+      ],
+      "reasonCodes": [
+        "weak_return_profile",
+        "low_sharpe_confidence",
+        "drawdown_risk",
+        "single_pair_bias"
+      ],
+      "verdict": "reject",
+      "weaknesses": [
+        "Return profile is still weak or too narrow",
+        "Sharpe profile needs more evidence",
+        "Drawdown is too large for easy live confidence",
+        "Too concentrated in one pair so far"
+      ]
     }
   ]
 }

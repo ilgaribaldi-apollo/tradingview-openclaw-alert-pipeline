@@ -12,6 +12,10 @@ from .paths import RANKINGS_DIR, RUNS_DIR
 LEADERBOARD_COLUMNS = [
     "run_id",
     "indicator_slug",
+    "experiment_slug",
+    "experiment_family",
+    "experiment_variant",
+    "experiment_kind",
     "exchange",
     "symbol",
     "timeframe",
@@ -81,6 +85,10 @@ def _append_leaderboard(indicator_slug: str, run_id: str, metrics: dict[str, Any
         {
             "run_id": run_id,
             "indicator_slug": indicator_slug,
+            "experiment_slug": metrics.get("experiment_slug", ""),
+            "experiment_family": metrics.get("experiment_family", ""),
+            "experiment_variant": metrics.get("experiment_variant", ""),
+            "experiment_kind": metrics.get("experiment_kind", ""),
             "exchange": metrics.get("exchange", ""),
             "symbol": metrics.get("symbol", ""),
             "timeframe": metrics.get("timeframe", ""),

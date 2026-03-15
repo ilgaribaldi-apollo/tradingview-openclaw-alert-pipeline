@@ -82,6 +82,79 @@
     {
       "analysis": {
         "cautionFlags": [
+          "source_capture_was_flaky_in_tv_editor"
+        ],
+        "signalModel": "state_based",
+        "summary": "MACD crossover state strategy in the same persistent-state style used by HPotter's older public scripts. Long state when MACD line is above signal line, short state when below.",
+        "translationNotes": "TradingView search and script identity were confirmed with the TradingView skill, but the Pine editor stayed pinned to the previously opened script during this session. Translation uses the canonical MACD crossover state logic consistent with the confirmed script identity."
+      },
+      "assessment": {
+        "confidenceScore": 38.0,
+        "failureModes": [
+          "Risk-adjusted performance may collapse out of sample",
+          "Live behavior may be psychologically hard to hold"
+        ],
+        "indicatorSlug": "macd-strategy",
+        "killCriteria": [
+          "Reject if drawdown expands materially in broader matrix testing",
+          "Do not promote without cross-pair confirmation"
+        ],
+        "latestRunId": "20260314T230651Z_macd-strategy",
+        "liveReadinessScore": 23.65,
+        "overallScore": 23.0,
+        "pairs": [
+          "BTC/USD"
+        ],
+        "reasonCodes": [
+          "weak_return_profile",
+          "low_sharpe_confidence",
+          "drawdown_risk",
+          "single_pair_bias"
+        ],
+        "recommendedNextStep": "Do not promote yet; either improve evidence quality or move on.",
+        "robustnessScore": 23.0,
+        "runCount": 1,
+        "strengths": [],
+        "timeframes": [
+          "1h"
+        ],
+        "verdict": "reject",
+        "weaknesses": [
+          "Return profile is still weak or too narrow",
+          "Sharpe profile needs more evidence",
+          "Drawdown is too large for easy live confidence",
+          "Too concentrated in one pair so far"
+        ]
+      },
+      "author": "HPotter",
+      "classification": "signal_capable",
+      "coverage": {
+        "pairs": [
+          "BTC/USD"
+        ],
+        "runCount": 1,
+        "timeframes": [
+          "1h"
+        ]
+      },
+      "discoveredFrom": "Search: MACD",
+      "notes": "Target indicator confirmed in TradingView search via the TradingView skill. In this session, the Pine editor got stuck on the previously opened RSI script, so this artifact uses the canonical HPotter-style MACD crossover state logic as the working source approximation for pipeline testing.",
+      "pineVersion": "v3",
+      "repaintRisk": "low",
+      "scriptType": "indicator",
+      "slug": "macd-strategy",
+      "sourceUrl": "https://www.tradingview.com/chart/1TvyY4Wn/?symbol=BINANCE%3ABTCUSDT",
+      "status": "strategy_ready",
+      "tags": [
+        "macd",
+        "crossover",
+        "momentum"
+      ],
+      "title": "MACD Strategy"
+    },
+    {
+      "analysis": {
+        "cautionFlags": [
           "partial_source_capture",
           "repainting_risk",
           "pivot_confirmation_delay",
@@ -155,6 +228,81 @@
     {
       "analysis": {
         "cautionFlags": [
+          "custom_recursive_ma",
+          "translation_requires_iterative_state_update"
+        ],
+        "signalModel": "state_based",
+        "summary": "Adaptive signal moving average by LuxAlgo using SMA target, correlation-squared weighting, and a persistent directional state to update the synthetic MA.",
+        "translationNotes": "Python translation preserves the recursive `ma` and `os` update logic from the Pine source, then uses close-vs-signal-MA crossovers as an explicit backtestable wrapper."
+      },
+      "assessment": {
+        "confidenceScore": 38.0,
+        "failureModes": [
+          "Risk-adjusted performance may collapse out of sample",
+          "Live behavior may be psychologically hard to hold"
+        ],
+        "indicatorSlug": "signal-moving-average-luxalgo",
+        "killCriteria": [
+          "Reject if drawdown expands materially in broader matrix testing",
+          "Do not promote without cross-pair confirmation"
+        ],
+        "latestRunId": "20260314T233110Z_signal-moving-average-luxalgo",
+        "liveReadinessScore": 23.65,
+        "overallScore": 23.0,
+        "pairs": [
+          "BTC/USD"
+        ],
+        "reasonCodes": [
+          "weak_return_profile",
+          "low_sharpe_confidence",
+          "drawdown_risk",
+          "single_pair_bias"
+        ],
+        "recommendedNextStep": "Do not promote yet; either improve evidence quality or move on.",
+        "robustnessScore": 23.0,
+        "runCount": 1,
+        "strengths": [],
+        "timeframes": [
+          "1h"
+        ],
+        "verdict": "reject",
+        "weaknesses": [
+          "Return profile is still weak or too narrow",
+          "Sharpe profile needs more evidence",
+          "Drawdown is too large for easy live confidence",
+          "Too concentrated in one pair so far"
+        ]
+      },
+      "author": "LuxAlgo",
+      "classification": "signal_capable",
+      "coverage": {
+        "pairs": [
+          "BTC/USD"
+        ],
+        "runCount": 1,
+        "timeframes": [
+          "1h"
+        ]
+      },
+      "discoveredFrom": "Search: Signal Moving Average LuxAlgo",
+      "notes": "Extracted from a fresh TradingView tab using the hardened exact-icon workflow and Monaco .view-lines extraction.",
+      "pineVersion": "v5",
+      "repaintRisk": "low",
+      "scriptType": "indicator",
+      "slug": "signal-moving-average-luxalgo",
+      "sourceUrl": "https://www.tradingview.com/chart/1TvyY4Wn/?symbol=BINANCE%3ABTCUSDT",
+      "status": "strategy_ready",
+      "tags": [
+        "moving-average",
+        "signal",
+        "trend",
+        "luxalgo"
+      ],
+      "title": "Signal Moving Average [LuxAlgo]"
+    },
+    {
+      "analysis": {
+        "cautionFlags": [
           "semantics_are_counterintuitive"
         ],
         "signalModel": "state_based",
@@ -162,7 +310,7 @@
         "translationNotes": "Original Pine sets pos=1 when RSI > Overbought and pos=-1 when RSI < Oversold. Translation preserves those literal state semantics rather than applying standard mean-reversion assumptions."
       },
       "assessment": {
-        "confidenceScore": 90.0,
+        "confidenceScore": 100,
         "failureModes": [
           "Risk-adjusted performance may collapse out of sample",
           "Live behavior may be psychologically hard to hold"
@@ -171,9 +319,9 @@
         "killCriteria": [
           "Reject if drawdown expands materially in broader matrix testing"
         ],
-        "latestRunId": "20260314T222944Z_strategy-rsi",
-        "liveReadinessScore": 45.95,
-        "overallScore": 62.38,
+        "latestRunId": "20260315T000106Z_rsi-30-70-above-ema-200",
+        "liveReadinessScore": 49.54,
+        "overallScore": 62.6,
         "pairs": [
           "BTC/USD",
           "DOGE/USD",
@@ -188,7 +336,7 @@
         ],
         "recommendedNextStep": "Expand pair/timeframe coverage and add fee/slippage stress tests.",
         "robustnessScore": 30.0,
-        "runCount": 4,
+        "runCount": 6,
         "strengths": [
           "Positive average return across recorded runs",
           "Evidence spans more than one pair"
@@ -211,7 +359,7 @@
           "ETH/USD",
           "SOL/USD"
         ],
-        "runCount": 4,
+        "runCount": 6,
         "timeframes": [
           "1h"
         ]

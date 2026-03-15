@@ -1,0 +1,26 @@
+experiment_slug: rsi-30-70-above-ema-200
+title: RSI 30/70 + Above 200 EMA
+family: rsi-thresholds
+variant: 30-70-above-ema-200
+indicators:
+  - strategy-rsi
+kind: variant
+status: active
+logic_path: logic.py
+notes: RSI threshold baseline with reusable 200 EMA trend filter.
+tags:
+  - rsi
+  - filter
+  - trend
+params:
+  length: 12
+  oversold: 30
+  overbought: 70
+filters:
+  - above-ema-200
+exits:
+  - opposite-signal
+matrix: default-matrix.yaml
+horizons:
+  - full
+rationale: Tests whether a simple trend filter improves baseline RSI behavior.

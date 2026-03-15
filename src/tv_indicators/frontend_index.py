@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any
 
 from .io import read_yaml, write_json
-from .paths import ANALYSIS_DIR, METADATA_DIR, RUNS_DIR
+from .paths import ANALYSIS_DIR, EXPERIMENT_COMBINATIONS_DIR, EXPERIMENT_FAMILIES_DIR, EXPERIMENT_VARIANTS_DIR, METADATA_DIR, RUNS_DIR
 from .runtime import RuntimeReadModelQueries, load_runtime_config
 from .runtime.promotion import summarize_promoted_bindings
 from .runtime.store import PostgresRuntimeStore, RuntimeStoreError
@@ -26,6 +26,7 @@ def export_frontend_indexes(*, runtime_config_name: str = "runtime.example.yaml"
     rankings = _load_rankings()
     candidates = _build_candidates(runs, rankings)
     indicators = _load_indicators(runs, candidates)
+    experiments = _load_experiments(runs)
     coverage = _build_coverage(indicators, runs)
     diagnostics = _build_diagnostics(candidates)
     live_readiness = _build_live_readiness(candidates)
@@ -35,6 +36,7 @@ def export_frontend_indexes(*, runtime_config_name: str = "runtime.example.yaml"
     paths = {
         "dashboard": _write_json("dashboard-summary.json", dashboard),
         "indicators": _write_json("indicators-index.json", {"items": indicators}),
+        "experiments": _write_json("experiments-index.json", {"items": experiments}),
         "coverage": _write_json("coverage-matrix.json", coverage),
         "rankings": _write_json("rankings-index.json", rankings),
         "runs": _write_json("runs-index.json", {"items": runs}),
@@ -98,6 +100,42 @@ def _load_indicators(
     return items
 
 
+def _load_experiments(runs: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    items: list[dict[str, Any]] = []
+    for base, kind in ((EXPERIMENT_VARIANTS_DIR, "variant"), (EXPERIMENT_COMBINATIONS_DIR, "combination")):
+        if not base.exists():
+            continue
+        for path in sorted(base.glob('*/experiment.yaml')):
+            data = read_yaml(path)
+            slug = data.get('experiment_slug', path.parent.name)
+            experiment_runs = [run for run in runs if run.get('experimentSlug') == slug]
+            latest_run = experiment_runs[0] if experiment_runs else None
+            items.append(
+                {
+                    'experimentSlug': slug,
+                    'title': data.get('title', slug),
+                    'family': data.get('family', ''),
+                    'variant': data.get('variant', ''),
+                    'kind': data.get('kind', kind),
+                    'status': data.get('status', 'draft'),
+                    'indicators': data.get('indicators', []),
+                    'tags': data.get('tags', []),
+                    'params': data.get('params', {}),
+                    'filters': data.get('filters', []),
+                    'exits': data.get('exits', []),
+                    'matrix': data.get('matrix', ''),
+                    'horizons': data.get('horizons', []),
+                    'notes': data.get('notes', ''),
+                    'rationale': data.get('rationale', ''),
+                    'runCount': len(experiment_runs),
+                    'latestRunId': latest_run.get('runId') if latest_run else None,
+                    'latestMetrics': latest_run.get('metrics') if latest_run else None,
+                }
+            )
+    items.sort(key=lambda item: (item.get('latestRunId') is None, item.get('experimentSlug', '')))
+    return items
+
+
 def _load_runs() -> list[dict[str, Any]]:
     items: list[dict[str, Any]] = []
     if not RUNS_DIR.exists():
@@ -116,6 +154,9 @@ def _load_runs() -> list[dict[str, Any]]:
             {
                 "runId": run_dir.name,
                 "indicatorSlug": config.get("indicator_slug") or metrics.get("indicator_slug"),
+                "experimentSlug": metrics.get("experiment_slug") or (config.get("experiment") or {}).get("experiment_slug"),
+                "experimentFamily": metrics.get("experiment_family") or (config.get("experiment") or {}).get("family"),
+                "experimentVariant": metrics.get("experiment_variant") or (config.get("experiment") or {}).get("variant"),
                 "exchange": config.get("exchange", metrics.get("exchange", "")),
                 "pair": config.get("symbol", metrics.get("symbol", "")),
                 "timeframe": config.get("timeframe", metrics.get("timeframe", "")),
@@ -148,6 +189,10 @@ def _load_rankings() -> dict[str, Any]:
                 history_items.append(
                     {
                         "indicatorSlug": row.get("indicator_slug", ""),
+                        "experimentSlug": row.get("experiment_slug", ""),
+                        "experimentFamily": row.get("experiment_family", ""),
+                        "experimentVariant": row.get("experiment_variant", ""),
+                        "experimentKind": row.get("experiment_kind", ""),
                         "runId": row.get("run_id", ""),
                         "exchange": row.get("exchange", ""),
                         "pair": row.get("symbol", ""),
@@ -178,7 +223,11 @@ def _load_rankings() -> dict[str, Any]:
             failed = list(csv.DictReader(handle))
     latest_map: dict[tuple[str, str, str], dict[str, Any]] = {}
     for item in history_items:
-        key = (item.get("indicatorSlug", ""), item.get("pair", ""), item.get("timeframe", ""))
+        key = (
+            item.get("experimentSlug", "") or item.get("indicatorSlug", ""),
+            item.get("pair", ""),
+            item.get("timeframe", ""),
+        )
         current = latest_map.get(key)
         if current is None or item.get("runId", "") > current.get("runId", ""):
             latest_map[key] = item

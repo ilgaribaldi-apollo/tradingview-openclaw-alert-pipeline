@@ -1,0 +1,5 @@
+name: min-atr-pct-1
+kind: min_atr_percent
+length: 14
+threshold: 0.01
+description: Only allow entries when ATR is at least 1% of price.

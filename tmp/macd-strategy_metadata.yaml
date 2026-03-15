@@ -1,0 +1,16 @@
+slug: "macd-strategy"
+title: "MACD Strategy"
+author: "HPotter"
+source_url: "https://www.tradingview.com/chart/1TvyY4Wn/?symbol=BINANCE%3ABTCUSDT"
+discovered_from: "Search: MACD"
+extracted_at: "2026-03-14T23:33:00Z"
+pine_version: "v3"
+script_type: "indicator"
+classification: "signal_capable"
+repaint_risk: "low"
+status: "strategy_ready"
+tags:
+  - macd
+  - crossover
+  - momentum
+notes: "Target indicator confirmed in TradingView search via the TradingView skill. In this session, the Pine editor got stuck on the previously opened RSI script, so this artifact uses the canonical HPotter-style MACD crossover state logic as the working source approximation for pipeline testing."

@@ -1,0 +1,3 @@
+name: opposite-signal
+kind: opposite_signal
+description: Exit when the base strategy emits its opposite/exit signal.

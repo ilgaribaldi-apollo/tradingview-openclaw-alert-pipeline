@@ -37,6 +37,42 @@
       "totalReturn": 23.99057624659189
     },
     {
+      "indicatorSlug": "macd-strategy",
+      "indicatorTitle": "MACD Strategy",
+      "pair": "BTC/USD",
+      "runId": "20260314T230651Z_macd-strategy",
+      "status": "tested",
+      "timeframe": "1h",
+      "totalReturn": -85.82462572546105
+    },
+    {
+      "indicatorSlug": "macd-strategy",
+      "indicatorTitle": "MACD Strategy",
+      "pair": "DOGE/USD",
+      "runId": null,
+      "status": "strategy_ready",
+      "timeframe": "1h",
+      "totalReturn": null
+    },
+    {
+      "indicatorSlug": "macd-strategy",
+      "indicatorTitle": "MACD Strategy",
+      "pair": "ETH/USD",
+      "runId": null,
+      "status": "strategy_ready",
+      "timeframe": "1h",
+      "totalReturn": null
+    },
+    {
+      "indicatorSlug": "macd-strategy",
+      "indicatorTitle": "MACD Strategy",
+      "pair": "SOL/USD",
+      "runId": null,
+      "status": "strategy_ready",
+      "timeframe": "1h",
+      "totalReturn": null
+    },
+    {
       "indicatorSlug": "machine-learning-pivot-points-knn-ss",
       "indicatorTitle": "Machine Learning Pivot Points (KNN) [SS]",
       "pair": "BTC/USD",
@@ -73,13 +109,49 @@
       "totalReturn": null
     },
     {
+      "indicatorSlug": "signal-moving-average-luxalgo",
+      "indicatorTitle": "Signal Moving Average [LuxAlgo]",
+      "pair": "BTC/USD",
+      "runId": "20260314T233110Z_signal-moving-average-luxalgo",
+      "status": "tested",
+      "timeframe": "1h",
+      "totalReturn": -71.13263443368473
+    },
+    {
+      "indicatorSlug": "signal-moving-average-luxalgo",
+      "indicatorTitle": "Signal Moving Average [LuxAlgo]",
+      "pair": "DOGE/USD",
+      "runId": null,
+      "status": "strategy_ready",
+      "timeframe": "1h",
+      "totalReturn": null
+    },
+    {
+      "indicatorSlug": "signal-moving-average-luxalgo",
+      "indicatorTitle": "Signal Moving Average [LuxAlgo]",
+      "pair": "ETH/USD",
+      "runId": null,
+      "status": "strategy_ready",
+      "timeframe": "1h",
+      "totalReturn": null
+    },
+    {
+      "indicatorSlug": "signal-moving-average-luxalgo",
+      "indicatorTitle": "Signal Moving Average [LuxAlgo]",
+      "pair": "SOL/USD",
+      "runId": null,
+      "status": "strategy_ready",
+      "timeframe": "1h",
+      "totalReturn": null
+    },
+    {
       "indicatorSlug": "strategy-rsi",
       "indicatorTitle": "Strategy RSI",
       "pair": "BTC/USD",
-      "runId": "20260314T222812Z_strategy-rsi",
+      "runId": "20260315T000106Z_rsi-30-70-above-ema-200",
       "status": "tested",
       "timeframe": "1h",
-      "totalReturn": 121.02621748898785
+      "totalReturn": 43.55764592184362
     },
     {
       "indicatorSlug": "strategy-rsi",

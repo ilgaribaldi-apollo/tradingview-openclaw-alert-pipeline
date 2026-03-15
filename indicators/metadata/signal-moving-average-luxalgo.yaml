@@ -1,0 +1,18 @@
+slug: signal-moving-average-luxalgo
+title: Signal Moving Average [LuxAlgo]
+author: LuxAlgo
+source_url: https://www.tradingview.com/chart/1TvyY4Wn/?symbol=BINANCE%3ABTCUSDT
+discovered_from: 'Search: Signal Moving Average LuxAlgo'
+extracted_at: '2026-03-14T23:19:00Z'
+pine_version: v5
+script_type: indicator
+classification: signal_capable
+repaint_risk: low
+status: strategy_ready
+tags:
+- moving-average
+- signal
+- trend
+- luxalgo
+notes: Extracted from a fresh TradingView tab using the hardened exact-icon workflow
+  and Monaco .view-lines extraction.

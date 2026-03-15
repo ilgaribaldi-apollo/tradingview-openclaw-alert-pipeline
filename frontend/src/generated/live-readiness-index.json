@@ -17,7 +17,7 @@
         "Robustness still too weak for paper/live promotion"
       ],
       "indicatorSlug": "strategy-rsi",
-      "liveReadinessScore": 45.95,
+      "liveReadinessScore": 49.54,
       "nextStage": "research",
       "recommendedNextStep": "Expand pair/timeframe coverage and add fee/slippage stress tests.",
       "verdict": "keep_researching"
@@ -28,6 +28,30 @@
       ],
       "indicatorSlug": "ema-ma-crossover",
       "liveReadinessScore": 45.0,
+      "nextStage": "research",
+      "recommendedNextStep": "Do not promote yet; either improve evidence quality or move on.",
+      "verdict": "reject"
+    },
+    {
+      "blockers": [
+        "Need more evidence across additional runs",
+        "Robustness still too weak for paper/live promotion",
+        "Cross-pair validation missing"
+      ],
+      "indicatorSlug": "signal-moving-average-luxalgo",
+      "liveReadinessScore": 23.65,
+      "nextStage": "research",
+      "recommendedNextStep": "Do not promote yet; either improve evidence quality or move on.",
+      "verdict": "reject"
+    },
+    {
+      "blockers": [
+        "Need more evidence across additional runs",
+        "Robustness still too weak for paper/live promotion",
+        "Cross-pair validation missing"
+      ],
+      "indicatorSlug": "macd-strategy",
+      "liveReadinessScore": 23.65,
       "nextStage": "research",
       "recommendedNextStep": "Do not promote yet; either improve evidence quality or move on.",
       "verdict": "reject"

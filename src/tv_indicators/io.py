@@ -12,8 +12,8 @@ from typing import Any
 import numpy as np
 import yaml
 
-from .models import AnalysisRecord, IndicatorMetadata
-from .paths import ANALYSIS_DIR, CATALOG_DIR, METADATA_DIR, RAW_DIR
+from .models import AnalysisRecord, ExperimentSpec, IndicatorMetadata
+from .paths import ANALYSIS_DIR, CATALOG_DIR, EXPERIMENT_REGISTRY_DIR, EXPERIMENT_VARIANTS_DIR, METADATA_DIR, RAW_DIR
 
 
 CATALOG_COLUMNS = [
@@ -28,6 +28,19 @@ CATALOG_COLUMNS = [
     "classification",
     "repaint_risk",
     "status",
+    "notes",
+]
+
+EXPERIMENT_REGISTRY_COLUMNS = [
+    "experiment_slug",
+    "title",
+    "family",
+    "variant",
+    "kind",
+    "status",
+    "indicators",
+    "matrix",
+    "tags",
     "notes",
 ]
 
@@ -114,6 +127,46 @@ def upsert_catalog(metadata: IndicatorMetadata) -> Path:
         rows.append(row)
     with path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=CATALOG_COLUMNS)
+        writer.writeheader()
+        writer.writerows(rows)
+    return path
+
+
+def save_experiment(spec: ExperimentSpec, directory: Path) -> Path:
+    path = directory / spec.experiment_slug / "experiment.yaml"
+    write_yaml(path, asdict(spec))
+    return path
+
+
+def upsert_experiment_registry(spec: ExperimentSpec) -> Path:
+    ensure_dir(EXPERIMENT_REGISTRY_DIR)
+    path = EXPERIMENT_REGISTRY_DIR / "experiments.csv"
+    rows: list[dict[str, str]] = []
+    if path.exists():
+        with path.open("r", encoding="utf-8", newline="") as handle:
+            rows = list(csv.DictReader(handle))
+    row = {
+        "experiment_slug": spec.experiment_slug,
+        "title": spec.title,
+        "family": spec.family,
+        "variant": spec.variant,
+        "kind": spec.kind,
+        "status": spec.status,
+        "indicators": ",".join(spec.indicators),
+        "matrix": spec.matrix,
+        "tags": ",".join(spec.tags),
+        "notes": spec.notes,
+    }
+    replaced = False
+    for idx, existing in enumerate(rows):
+        if existing.get("experiment_slug") == spec.experiment_slug:
+            rows[idx] = row
+            replaced = True
+            break
+    if not replaced:
+        rows.append(row)
+    with path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=EXPERIMENT_REGISTRY_COLUMNS)
         writer.writeheader()
         writer.writerows(rows)
     return path

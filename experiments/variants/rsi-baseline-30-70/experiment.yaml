@@ -1,0 +1,24 @@
+experiment_slug: rsi-baseline-30-70
+title: RSI Baseline 30/70
+family: rsi-thresholds
+variant: baseline-30-70
+indicators:
+  - strategy-rsi
+kind: variant
+status: active
+logic_path: logic.py
+notes: Literal RSI threshold experiment with 30/70 levels.
+tags:
+  - rsi
+  - baseline
+params:
+  length: 12
+  oversold: 30
+  overbought: 70
+filters: []
+exits:
+  - opposite_signal
+matrix: default-matrix.yaml
+horizons:
+  - full
+rationale: Baseline RSI threshold variant.
