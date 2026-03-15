@@ -56,6 +56,8 @@ export type IndicatorRecord = {
   assessment?: CandidateAssessment;
 };
 
+export type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue | undefined };
+
 export type ExperimentRecord = {
   experimentSlug: string;
   title: string;
@@ -74,7 +76,7 @@ export type ExperimentRecord = {
   rationale: string;
   runCount: number;
   latestRunId?: string | null;
-  latestMetrics?: Record<string, string | number | boolean | null> | null;
+  latestMetrics?: Record<string, JsonValue> | null;
 };
 
 export type RunRecord = {
@@ -95,7 +97,7 @@ export type RunRecord = {
   feesBps?: number;
   slippageBps?: number;
   engine?: string;
-  metrics: Record<string, string | number | boolean | null>;
+  metrics: Record<string, JsonValue>;
   summary: string;
 };
 
